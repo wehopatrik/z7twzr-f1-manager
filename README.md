@@ -2,6 +2,7 @@
 Wehovszky Patrik Márk Adatbázisok 2. tantárgy beadandója
 
 **• beadandó célja:** a 2021-es és 2022-es Formula 1 szezon összefoglalása
+
 **• adatbázis lényegi tárgyai:** motorgyártók, csapatok, pilóták, futamok
 
 • updated on 2022.01.02.
