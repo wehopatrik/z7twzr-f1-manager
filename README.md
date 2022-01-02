@@ -5,4 +5,4 @@ Wehovszky Patrik Márk Adatbázisok 2. tantárgy beadandója
 
 **• adatbázis lényegi tárgyai:** motorgyártók, csapatok, pilóták, futamok
 
-• updated on 2022.01.02.
+updated on 2022.01.02.
