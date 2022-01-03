@@ -1,0 +1,1 @@
+CREATE SEQUENCE csapatok_seq START WITH 11;
