@@ -9,6 +9,7 @@ PROMPT Installing DB...
 @./sequences/futamok_osszes_seq.sql
 @./sequences/futamok2021_seq.sql
 @./sequences/futamok2022_seq.sql
+@./sequences/error_sequence/hiba_log_seq.sql
 
 -- Táblák létrehozása
 @./table_creating/table_motorgyartok.sql
@@ -27,6 +28,7 @@ PROMPT Installing DB...
 @./table_creating/history_tables/table_futamok_osszes_h.sql
 @./table_creating/history_tables/table_futamok2021_h.sql
 @./table_creating/history_tables/table_futamok2022_h.sql
+@./table_creating/error_table/table_hiba_log.sql
 
 -- Elsõdleges kulcsok
 @./alter/primary_keys/motorgyartok_pk.sql
@@ -41,6 +43,9 @@ PROMPT Installing DB...
 -- Típusok installálása
 
 -- Packages
+@./packages/pkg_hiba_log.pck
+@./packages/pkg_kivetelek.pck
+@./packages/pkg_futam_adatok.pck
 
 -- Nézetek
 @./views/vw_csapat_motor.sql
@@ -80,11 +85,19 @@ END;
 @./alter/foreign_keys/pilotak2022_fk1.sql
 @./alter/foreign_keys/pilotak2022_fk2.sql
 
+-- Függvények
+@./functions/func_hany_kor_gumi.fnc
+@./functions/func_hanyszor_nyert.fnc
+
 -- Triggerek
 @./triggers/sequence_triggers/csapatok_seq_trg.trg
 @./triggers/sequence_triggers/motorgyartok_seq_trg.trg
 @./triggers/sequence_triggers/pilotak_osszes_seq_trg.trg
 @./triggers/sequence_triggers/futamok_osszes_seq_trg.trg
+@./triggers/sequence_triggers/pilotak2021_seq_trg.trg
+@./triggers/sequence_triggers/pilotak2022_seq_trg.trg
+@./triggers/sequence_triggers/futamok2021_seq_trg.trg
+@./triggers/sequence_triggers/futamok2021_seq_trg.trg
 @./triggers/motorgyartok_trg.trg
 @./triggers/csapatok_trg.trg
 @./triggers/pilotak_osszes_trg.trg
