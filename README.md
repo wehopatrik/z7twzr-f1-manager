@@ -20,4 +20,4 @@ Táblák magyarázata
 7. futamok2021 - 2021-es szezonban megrendezett futamok felsorolása
 8. futamok2022 - 2022-es szezonban megrendezett futamok felsorolása
 
-updated on 2022.01.02.
+updated on 2022.01.03.
