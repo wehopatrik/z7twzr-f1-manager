@@ -15,9 +15,9 @@ Táblák magyarázata
 2. csapatok - szezonok alatti összes csapat nyilvántartása
 3. pilotak_osszes - szezonok alatti összes pilóta nyilvántartása
 4. futamok_osszes - szezonok alatti összes futam nyilvántartása
-5. pilotak2021 - 2021-es szezonban résztvevő pilóták felsorolása
-6. pilotak2022 - 2022-es szezonban résztvevő pilóták felsorolása
-7. futamok2021 - 2021-es szezonban megrendezett futamok felsorolása
-8. futamok2022 - 2022-es szezonban megrendezett futamok felsorolása
+5. pilotak2021 - 2021-es szezonban résztvevő pilóták
+6. pilotak2022 - 2022-es szezonban résztvevő pilóták
+7. futamok2021 - 2021-es szezonban megrendezett futamok
+8. futamok2022 - 2022-es szezonban megrendezett futamok
 
 updated on 2022.01.03.
