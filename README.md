@@ -11,13 +11,11 @@ Telepítés lépései
 
 Táblák magyarázata
 -
-1. motorgyartok - szezonok alatti összes motorgyártó nyilvántartása
-2. csapatok - szezonok alatti összes csapat nyilvántartása
-3. pilotak_osszes - szezonok alatti összes pilóta nyilvántartása
-4. futamok_osszes - szezonok alatti összes futam nyilvántartása
-5. pilotak2021 - 2021-es szezonban résztvevő pilóták
-6. pilotak2022 - 2022-es szezonban résztvevő pilóták
-7. futamok2021 - 2021-es szezonban megrendezett futamok
-8. futamok2022 - 2022-es szezonban megrendezett futamok
+1. motorgyarto - szezonok alatti összes motorgyártó nyilvántartása
+2. csapat - szezonok alatti összes csapat nyilvántartása
+3. pilota_osszes - szezonok alatti összes pilóta nyilvántartása
+4. futam_osszes - szezonok alatti összes futam nyilvántartása
+5. pilota_csapat - piloták csapattal való összerendelése
+6. futam_ev - összes eddigi évben rendezett futam felsorolása dátumokkal
 
 updated on 2022.01.03.
