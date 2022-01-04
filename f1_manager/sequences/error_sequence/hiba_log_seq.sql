@@ -1,0 +1,1 @@
+CREATE SEQUENCE hiba_log_seq START WITH 1;
