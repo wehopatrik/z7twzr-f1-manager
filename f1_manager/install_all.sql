@@ -35,16 +35,17 @@ PROMPT Installing DB...
 -- Típusok installálása
 @./types/ty_futam_adatok.typ
 @./types/ty_futam_adatok_l.tps
-@./types/ty_hanyszor_nyert.typ
-@./types/ty_hanyszor_nyert_l.tps
 
 -- Packagek
 @./packages/pkg_hiba_log.pck
 @./packages/pkg_kivetelek.pck
-/*@./packages/pkg_futam_adatok.pck
-@./packages/pkg_uj_elem.pck
-@./packages/pkg_torles_futam.pck
-@./packages/pkg_csere_futam.pck*/
+@./packages/pkg_szezon_adatok.pck
+@./packages/table_packages/pkg_motorgyarto.pck
+@./packages/table_packages/pkg_csapat.pck
+@./packages/table_packages/pkg_pilota_osszes.pck
+@./packages/table_packages/pkg_pilota_csapat.pck
+@./packages/table_packages/pkg_futam_osszes.pck
+@./packages/table_packages/pkg_futam_ev.pck
 
 -- Függvények
 @./functions/func_hany_kor_gumi.fnc
