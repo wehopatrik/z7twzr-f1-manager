@@ -1,1 +1,0 @@
-CREATE SEQUENCE csapat_seq START WITH 11;

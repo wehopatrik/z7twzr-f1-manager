@@ -1,1 +1,0 @@
-CREATE SEQUENCE futam_ev_seq START WITH 46;

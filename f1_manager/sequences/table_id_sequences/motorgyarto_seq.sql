@@ -1,1 +1,0 @@
-CREATE SEQUENCE motorgyarto_seq START WITH 5;
