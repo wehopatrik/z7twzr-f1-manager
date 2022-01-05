@@ -1,0 +1,138 @@
+CREATE OR REPLACE PACKAGE pkg_pilota_csapat IS
+
+  PROCEDURE uj_pilota_csapat(p_szemely_id  IN NUMBER
+                            ,p_csapat_id   IN NUMBER
+                            ,p_pilota_szam IN NUMBER
+                            ,p_mettol      IN DATE
+                            ,p_meddig      IN DATE);
+
+  PROCEDURE pilota_csapat_modositas(p_pilota_csapat_id IN NUMBER
+                                   ,p_szemely_id       IN NUMBER
+                                   ,p_csapat_id        IN NUMBER
+                                   ,p_pilota_szam      IN NUMBER
+                                   ,p_mettol           IN DATE
+                                   ,p_meddig           IN DATE);
+
+END pkg_pilota_csapat;
+/
+CREATE OR REPLACE PACKAGE BODY pkg_pilota_csapat IS
+
+  gc_pkg_nev CONSTANT VARCHAR2(30) := 'pkg_pilota_csapat';
+
+  -- uj pilota_csapat osszerendeles a pilota_csapat tablaba
+  PROCEDURE uj_pilota_csapat(p_szemely_id  IN NUMBER
+                            ,p_csapat_id   IN NUMBER
+                            ,p_pilota_szam IN NUMBER
+                            ,p_mettol      IN DATE
+                            ,p_meddig      IN DATE) IS
+    c_proc_nev CONSTANT VARCHAR(30) := 'uj_pilota_csapat';
+  BEGIN
+    INSERT INTO pilota_csapat
+      (szemely_id
+      ,csapat_id
+      ,pilota_szam
+      ,mettol
+      ,meddig)
+    VALUES
+      (p_szemely_id
+      ,p_csapat_id
+      ,p_pilota_szam
+      ,p_mettol
+      ,p_meddig);
+  EXCEPTION
+    WHEN no_data_found THEN
+      pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_ertek  => 'p_szemely_id = ' ||
+                                                  p_szemely_id || chr(10) ||
+                                                  'p_csapat_id = ' ||
+                                                  p_csapat_id || chr(10) ||
+                                                  'p_pilota_szam = ' ||
+                                                  p_pilota_szam || chr(10) ||
+                                                  'p_mettol = ' || p_mettol ||
+                                                  chr(10) || 'p_meddig = ' ||
+                                                  p_meddig,
+                                 p_api         => gc_pkg_nev || '.' ||
+                                                  c_proc_nev);
+      raise_application_error(pkg_kivetelek.gc_nincs_adat_hiba_code,
+                              'Nincs valamilyen adat.');
+      RAISE pkg_kivetelek.exc_nincs_adat_hiba;
+    WHEN OTHERS THEN
+      pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_ertek  => 'p_szemely_id = ' ||
+                                                  p_szemely_id || chr(10) ||
+                                                  'p_csapat_id = ' ||
+                                                  p_csapat_id || chr(10) ||
+                                                  'p_pilota_szam = ' ||
+                                                  p_pilota_szam || chr(10) ||
+                                                  'p_mettol = ' || p_mettol ||
+                                                  chr(10) || 'p_meddig = ' ||
+                                                  p_meddig,
+                                 p_api         => gc_pkg_nev || '.' ||
+                                                  c_proc_nev);
+      raise_application_error(pkg_kivetelek.gc_altalanos_hiba_code,
+                              'Altalanos hiba.');
+      RAISE pkg_kivetelek.exc_altalanos_hiba;
+  END uj_pilota_csapat;
+
+  -- pilota_csapat modositas a pilota_osszes tablaban
+  PROCEDURE pilota_csapat_modositas(p_pilota_csapat_id IN NUMBER
+                                   ,p_szemely_id       IN NUMBER
+                                   ,p_csapat_id        IN NUMBER
+                                   ,p_pilota_szam      IN NUMBER
+                                   ,p_mettol           IN DATE
+                                   ,p_meddig           IN DATE) IS
+  
+    c_proc_nev CONSTANT VARCHAR(30) := 'pilota_csapat_modositas';
+  
+  BEGIN
+    UPDATE pilota_csapat pcs
+       SET pcs.szemely_id  = p_szemely_id
+          ,pcs.csapat_id   = p_csapat_id
+          ,pcs.pilota_szam = p_pilota_szam
+          ,pcs.mettol      = p_mettol
+          ,pcs.meddig      = p_meddig
+     WHERE pcs.pilota_csapat_id = p_pilota_csapat_id;
+  
+  EXCEPTION
+    WHEN no_data_found THEN
+      pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_ertek  => 'p_pilota_csapat_id = ' ||
+                                                  p_pilota_csapat_id ||
+                                                  chr(10) ||
+                                                  'p_szemely_id = ' ||
+                                                  p_szemely_id || chr(10) ||
+                                                  'p_csapat_id = ' ||
+                                                  p_csapat_id || chr(10) ||
+                                                  'p_pilota_szam = ' ||
+                                                  p_pilota_szam || chr(10) ||
+                                                  'p_mettol = ' || p_mettol ||
+                                                  chr(10) || 'p_meddig = ' ||
+                                                  p_meddig,
+                                 p_api         => gc_pkg_nev || '.' ||
+                                                  c_proc_nev);
+      raise_application_error(pkg_kivetelek.gc_nincs_adat_hiba_code,
+                              'Nincs valamilyen adat.');
+      RAISE pkg_kivetelek.exc_nincs_adat_hiba;
+    WHEN OTHERS THEN
+      pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_ertek  => 'p_pilota_csapat_id = ' ||
+                                                  p_pilota_csapat_id ||
+                                                  chr(10) ||
+                                                  'p_szemely_id = ' ||
+                                                  p_szemely_id || chr(10) ||
+                                                  'p_csapat_id = ' ||
+                                                  p_csapat_id || chr(10) ||
+                                                  'p_pilota_szam = ' ||
+                                                  p_pilota_szam || chr(10) ||
+                                                  'p_mettol = ' || p_mettol ||
+                                                  chr(10) || 'p_meddig = ' ||
+                                                  p_meddig,
+                                 p_api         => gc_pkg_nev || '.' ||
+                                                  c_proc_nev);
+      raise_application_error(pkg_kivetelek.gc_altalanos_hiba_code,
+                              'Altalanos hiba.');
+      RAISE pkg_kivetelek.exc_altalanos_hiba;
+  END pilota_csapat_modositas;
+
+END pkg_pilota_csapat;
+/
