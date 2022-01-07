@@ -10,6 +10,8 @@ CREATE OR REPLACE PACKAGE pkg_futam_osszes IS
                                   ,p_futam_orszag IN VARCHAR2
                                   ,p_futam_hely   IN VARCHAR2
                                   ,p_palya_nev    IN VARCHAR2);
+                                  
+  PROCEDURE futam_osszes_adatok(p_futam_id IN NUMBER);
 
 END pkg_futam_osszes;
 /
@@ -121,6 +123,57 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_osszes IS
                               'Altalanos hiba.');
       RAISE pkg_kivetelek.exc_altalanos_hiba;
   END futam_osszes_modositas;
+  
+  -- futam_osszes tabla kiiratasa vagy egy futam_osszes kiiratasa
+  PROCEDURE futam_osszes_adatok(p_futam_id IN NUMBER) IS
+    c_proc_nev CONSTANT VARCHAR(30) := 'futam_osszes_adatok';
+    c_list ty_futam_osszes_l;
+    
+  BEGIN
+    CASE
+      WHEN p_futam_id IS NULL THEN
+        SELECT ty_futam_osszes(fo.futam_id,
+                               fo.futam_nev,
+                               fo.futam_orszag,
+                               fo.futam_hely,
+                               fo.palya_nev)
+        BULK COLLECT
+        INTO c_list
+        FROM futam_osszes fo;
+      ELSE
+        SELECT ty_futam_osszes(fo.futam_id,
+                               fo.futam_nev,
+                               fo.futam_orszag,
+                               fo.futam_hely,
+                               fo.palya_nev)
+        BULK COLLECT
+        INTO c_list
+        FROM futam_osszes fo
+        WHERE fo.futam_id = p_futam_id;
+    END CASE;
+
+    FOR i IN 1 .. c_list.count
+    LOOP
+      dbms_output.put_line('Futam ID: ' || c_list(i).futam_id || chr(10) ||
+                           'Futam nev: ' || c_list(i).futam_nev || chr(10) ||
+                           'Futam orszag: ' || c_list(i).futam_orszag || chr(10) ||
+                           'Futam hely: ' || c_list(i).futam_hely || chr(10) ||
+                           'Palya nev: ' || c_list(i).palya_nev || chr(10));
+    END LOOP;
+    EXCEPTION
+      WHEN no_data_found THEN
+        pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                   p_hiba_ertek  => 'p_futam_id = ' || p_futam_id,
+                                   p_api         => gc_pkg_nev || '.' || c_proc_nev);
+        raise_application_error(pkg_kivetelek.gc_nincs_adat_hiba_code, 'Nincs adat az adott futamra.');
+        RAISE pkg_kivetelek.exc_nincs_adat_hiba;
+      WHEN OTHERS THEN
+        pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                   p_hiba_ertek  => 'p_futam_id = ' || p_futam_id,
+                                   p_api         => gc_pkg_nev || '.' || c_proc_nev);
+        raise_application_error(pkg_kivetelek.gc_altalanos_hiba_code, 'Altalanos hiba.');
+        RAISE pkg_kivetelek.exc_altalanos_hiba;
+  END futam_osszes_adatok;
 
 END pkg_futam_osszes;
 /

@@ -35,6 +35,18 @@ PROMPT Installing DB...
 -- Típusok installálása
 @./types/ty_futam_adatok.typ
 @./types/ty_futam_adatok_l.tps
+@./types/main_table_types/ty_motorgyarto.typ
+@./types/main_table_types/ty_motorgyarto_l.tps
+@./types/main_table_types/ty_csapat.typ
+@./types/main_table_types/ty_csapat_l.tps
+@./types/main_table_types/ty_pilota_csapat.typ
+@./types/main_table_types/ty_pilota_csapat_l.tps
+@./types/main_table_types/ty_pilota_osszes.typ
+@./types/main_table_types/ty_pilota_osszes_l.tps
+@./types/main_table_types/ty_futam_ev.typ
+@./types/main_table_types/ty_futam_ev_l.tps
+@./types/main_table_types/ty_futam_osszes.typ
+@./types/main_table_types/ty_futam_osszes_l.tps
 
 -- Packagek
 @./packages/pkg_hiba_log.pck
@@ -54,6 +66,7 @@ PROMPT Installing DB...
 -- Nézetek
 @./views/vw_csapat_motor.sql
 @./views/vw_futamok_2021.sql
+@./views/vw_futamok_2022.sql
 @./views/vw_pilota_csapat_2021.sql
 @./views/vw_pilota_csapat_2022.sql
 

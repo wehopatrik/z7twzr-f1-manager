@@ -12,6 +12,8 @@ CREATE OR REPLACE PACKAGE pkg_pilota_csapat IS
                                    ,p_pilota_szam      IN NUMBER
                                    ,p_mettol           IN DATE
                                    ,p_meddig           IN DATE);
+                                   
+  PROCEDURE pilota_csapat_adatok(p_pilota_csapat_id IN NUMBER);
 
 END pkg_pilota_csapat;
 /
@@ -133,6 +135,60 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_csapat IS
                               'Altalanos hiba.');
       RAISE pkg_kivetelek.exc_altalanos_hiba;
   END pilota_csapat_modositas;
+  
+  -- pilota_csapat tabla kiiratasa vagy egy pilota_csapat kiiratasa
+  PROCEDURE pilota_csapat_adatok(p_pilota_csapat_id IN NUMBER) IS
+    c_proc_nev CONSTANT VARCHAR(30) := 'pilota_csapat_adatok';
+    c_list ty_pilota_csapat_l;
+    
+  BEGIN
+    CASE
+      WHEN p_pilota_csapat_id IS NULL THEN
+        SELECT ty_pilota_csapat(pcs.pilota_csapat_id,
+                                pcs.szemely_id,
+                                pcs.csapat_id,
+                                pcs.pilota_szam,
+                                pcs.mettol,
+                                pcs.meddig)
+        BULK COLLECT
+        INTO c_list
+        FROM pilota_csapat pcs;
+      ELSE
+        SELECT ty_pilota_csapat(pcs.pilota_csapat_id,
+                                pcs.szemely_id,
+                                pcs.csapat_id,
+                                pcs.pilota_szam,
+                                pcs.mettol,
+                                pcs.meddig)
+        BULK COLLECT
+        INTO c_list
+        FROM pilota_csapat pcs
+        WHERE pcs.pilota_csapat_id = p_pilota_csapat_id;
+    END CASE;
+
+    FOR i IN 1 .. c_list.count
+    LOOP
+      dbms_output.put_line('Pilota csapat ID: ' || c_list(i).pilota_csapat_id || chr(10) ||
+                           'Szemely nev: ' || c_list(i).szemely_id || chr(10) ||
+                           'Csapat ID: ' || c_list(i).csapat_id || chr(10) ||
+                           'Pilota szam: ' || c_list(i).pilota_szam || chr(10) ||
+                           'Mettol: ' || c_list(i).mettol || chr(10) ||
+                           'Meddig: ' || c_list(i).meddig || chr(10));
+    END LOOP;
+    EXCEPTION
+      WHEN no_data_found THEN
+        pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                   p_hiba_ertek  => 'p_pilota_csapat_id = ' || p_pilota_csapat_id,
+                                   p_api         => gc_pkg_nev || '.' || c_proc_nev);
+        raise_application_error(pkg_kivetelek.gc_nincs_adat_hiba_code, 'Nincs adat az adott futamra.');
+        RAISE pkg_kivetelek.exc_nincs_adat_hiba;
+      WHEN OTHERS THEN
+        pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                   p_hiba_ertek  => 'p_pilota_csapat_id = ' || p_pilota_csapat_id,
+                                   p_api         => gc_pkg_nev || '.' || c_proc_nev);
+        raise_application_error(pkg_kivetelek.gc_altalanos_hiba_code, 'Altalanos hiba.');
+        RAISE pkg_kivetelek.exc_altalanos_hiba;
+  END pilota_csapat_adatok;
 
 END pkg_pilota_csapat;
 /
