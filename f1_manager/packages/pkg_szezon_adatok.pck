@@ -14,20 +14,22 @@ CREATE OR REPLACE PACKAGE BODY pkg_szezon_adatok IS
     
   BEGIN
     SELECT ty_futam_adatok(fo.futam_nev,                -- futam_nev
-                           fe.nyertes_szemely_id,       -- nyertes_pilota
+                           po1.szemely_nev,             -- nyertes_pilota
                            cs.csapat_nev,               -- nyertes_csapat
-                           fe.leggyorsabb_szemely_id    -- leggyorsabb_pilota
+                           po2.szemely_nev              -- leggyorsabb_pilota
                           )
     BULK COLLECT
     INTO c_list
-    FROM pilota_osszes po
-      JOIN futam_ev fe ON po.szemely_id = fe.nyertes_szemely_id
+    FROM futam_ev fe
+      LEFT JOIN pilota_osszes po1 ON po1.szemely_id = fe.nyertes_szemely_id
+      LEFT JOIN pilota_osszes po2 ON po2.szemely_id = fe.leggyorsabb_szemely_id
       JOIN futam_osszes fo ON fo.futam_id = fe.futam_id
-      JOIN pilota_csapat pcs ON pcs.szemely_id = po.szemely_id
+      JOIN pilota_csapat pcs ON pcs.szemely_id = po1.szemely_id
       JOIN csapat cs ON cs.csapat_id = pcs.csapat_id 
     WHERE (extract(YEAR FROM fe.idopont) = p_szezon_ev)
     AND (pcs.mettol BETWEEN to_date('1950-01-01', 'yyyy-mm-dd') AND to_date(p_szezon_ev || '-12-31', 'yyyy-mm-dd'))
-    AND (nvl(pcs.meddig, SYSDATE) BETWEEN to_date(p_szezon_ev || '-01-01', 'yyyy-mm-dd') AND SYSDATE);
+    AND (nvl(pcs.meddig, SYSDATE) BETWEEN to_date(p_szezon_ev || '-01-01', 'yyyy-mm-dd') AND SYSDATE)
+    ORDER BY fe.idopont;
 
     FOR i IN 1 .. c_list.count
     LOOP

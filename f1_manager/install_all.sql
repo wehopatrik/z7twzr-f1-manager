@@ -1,5 +1,8 @@
 PROMPT Installing DB...
 
+SET serveroutput ON
+spool .\telepites.log
+
 -- Szekvenciák létrehozása
 @./sequences/table_id_sequences/motorgyarto_seq.sql
 @./sequences/table_id_sequences/csapat_seq.sql
@@ -32,6 +35,14 @@ PROMPT Installing DB...
 @./alter/primary_keys/futam_osszes_pk.sql
 @./alter/primary_keys/futam_ev_pk.sql
 
+-- Külsõ kulcsok
+@./alter/foreign_keys/csapat_fk.sql
+@./alter/foreign_keys/futam_ev_fk1.sql
+@./alter/foreign_keys/futam_ev_fk2.sql
+@./alter/foreign_keys/futam_ev_fk3.sql
+@./alter/foreign_keys/pilota_csapat_fk1.sql
+@./alter/foreign_keys/pilota_csapat_fk2.sql
+
 -- Típusok installálása
 @./types/ty_futam_adatok.typ
 @./types/ty_futam_adatok_l.tps
@@ -63,20 +74,6 @@ PROMPT Installing DB...
 @./functions/func_hany_kor_gumi.fnc
 @./functions/func_hanyszor_nyert.fnc
 
--- Nézetek
-@./views/vw_csapat_motor.sql
-@./views/vw_futamok_2021.sql
-@./views/vw_futamok_2022.sql
-@./views/vw_pilota_csapat_2021.sql
-@./views/vw_pilota_csapat_2022.sql
-
-
--- Séma újrafordítása
-BEGIN
-  dbms_utility.compile_schema(schema => 'F1_MANAGER');
-END;
-/
-
 -- Triggerek
 @./triggers/sequence_triggers/csapat_seq_trg.trg
 @./triggers/sequence_triggers/motorgyarto_seq_trg.trg
@@ -97,6 +94,13 @@ END;
 @./triggers/history_triggers/futam_osszes_h_trg.trg
 @./triggers/history_triggers/futam_ev_h_trg.trg
 
+-- Nézetek
+@./views/vw_csapat_motor.sql
+@./views/vw_futamok_2021.sql
+@./views/vw_futamok_2022.sql
+@./views/vw_pilota_csapat_2021.sql
+@./views/vw_pilota_csapat_2022.sql
+
 -- Tábla feltöltések
 @./table_loading/insert_into_motorgyarto.sql
 @./table_loading/insert_into_csapat.sql
@@ -105,12 +109,12 @@ END;
 @./table_loading/insert_into_futam_osszes.sql
 @./table_loading/insert_into_futam_ev.sql
 
--- Külsõ kulcsok
-@./alter/foreign_keys/csapat_fk.sql
-@./alter/foreign_keys/futam_ev_fk1.sql
-@./alter/foreign_keys/futam_ev_fk2.sql
-@./alter/foreign_keys/futam_ev_fk3.sql
-@./alter/foreign_keys/pilota_csapat_fk1.sql
-@./alter/foreign_keys/pilota_csapat_fk2.sql
+-- Séma újrafordítása
+BEGIN
+  dbms_utility.compile_schema(schema => 'F1_MANAGER');
+END;
+/
+
+spool off
 
 PROMPT Done.
