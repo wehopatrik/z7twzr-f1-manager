@@ -43,6 +43,9 @@ spool .\telepites.log
 @./alter/foreign_keys/pilota_csapat_fk1.sql
 @./alter/foreign_keys/pilota_csapat_fk2.sql
 
+-- Ellenõrzö megszorítás
+@./alter/check/pilota_szam_chk.sql
+
 -- Típusok installálása
 @./types/ty_futam_adatok.typ
 @./types/ty_futam_adatok_l.tps
