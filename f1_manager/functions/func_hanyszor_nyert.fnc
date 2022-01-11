@@ -15,6 +15,7 @@ BEGIN
   AND (nvl(pcs.meddig, SYSDATE) BETWEEN to_date(p_szezon_ev || '-01-01', 'yyyy-mm-dd') AND SYSDATE)               -- p_szezon_ev_vege - SYSDATE
   GROUP BY po.szemely_nev;
   
+  -- ellenõrzésképpen
   dbms_output.put_line('Pilóta neve: ' || v_nyertes_pilota_neve || chr(10) ||
                        'Nyereségek száma: ' || v_szamlalo);
 

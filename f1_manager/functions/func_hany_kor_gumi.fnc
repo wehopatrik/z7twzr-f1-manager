@@ -15,10 +15,13 @@ BEGIN
       v_gumi_alap_km := 90;
     WHEN 3 THEN
       v_gumi_alap_km := 120;
+    ELSE
+      RAISE pkg_kivetelek.exc_nincs_ilyen_gumi;
   END CASE;
   
   v_korok_adott_gumival := v_gumi_alap_km / v_palya_hossza;
   
+  -- ellenõrzésképpen
   dbms_output.put_line('Alapbol a gumi ennyi km-t bir ki: ' || v_gumi_alap_km || ' km' || chr(10) || 'A palya hossza: ' || v_palya_hossza || ' km' || chr(10) ||  'Adott gumival birt korok szama: ' || trunc(v_korok_adott_gumival,3));
   
   RETURN trunc(v_korok_adott_gumival,3);
@@ -31,6 +34,12 @@ BEGIN
                                  p_api         => proc_nev);
       raise_application_error(pkg_kivetelek.gc_nincs_adat_hiba_code, 'Nem talalhato valamilyen adat.');
       RAISE pkg_kivetelek.exc_nincs_adat_hiba;
+    WHEN pkg_kivetelek.exc_nincs_ilyen_gumi THEN
+      pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_ertek  => 'p_szezon_ev = ' || p_szezon_ev || chr(10) || 'p_futam_id = ' || p_hanyadik_futam || chr(10) ||
+                                                  'p_gumi_tipus = ' || p_gumi_tipus,
+                                 p_api         => proc_nev);
+      raise_application_error(pkg_kivetelek.gc_nincs_ilyen_gumi_code, 'Nincs ilyen gumitipus.');
     WHEN OTHERS THEN
       pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
                                    p_hiba_ertek  => 'p_szezon_ev = ' || p_szezon_ev || chr(10) || 'p_futam_id = ' || p_hanyadik_futam || chr(10) ||
