@@ -6,12 +6,12 @@ CREATE TABLE futam_ev(
  ,kor_szam                        NUMBER
  ,nyertes_szemely_id              NUMBER
  ,leggyorsabb_szemely_id          NUMBER
- ,leggyorsabb_ido                 VARCHAR(10)
+ ,leggyorsabb_ido                 VARCHAR2(10)
  ,idopont                         DATE
  ,modositva                       DATE           DEFAULT SYSDATE NOT NULL
  ,letrehozva                      DATE           DEFAULT SYSDATE NOT NULL
- ,mod_felhasznalo                 VARCHAR(50)
- ,dml_flag                        VARCHAR(1)
+ ,mod_felhasznalo                 VARCHAR2(50)
+ ,dml_flag                        VARCHAR2(1)
  ,version                         NUMBER
 ) 
 TABLESPACE users;

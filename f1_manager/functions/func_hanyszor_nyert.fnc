@@ -2,7 +2,7 @@ CREATE OR REPLACE FUNCTION func_hanyszor_nyert (p_szezon_ev IN NUMBER, p_pilota_
 
   func_nev VARCHAR2(30) := 'func_hanyszor_nyert';
   v_szamlalo NUMBER;
-  v_nyertes_pilota_neve VARCHAR(30);
+  v_nyertes_pilota_neve VARCHAR2(30);
 
 BEGIN
   v_szamlalo := 0;

@@ -7,7 +7,7 @@ CREATE TABLE pilota_csapat_h(
  ,meddig                          DATE
  ,modositva                       DATE
  ,letrehozva                      DATE
- ,mod_felhasznalo                 VARCHAR(50)
- ,dml_flag                        VARCHAR(1)
+ ,mod_felhasznalo                 VARCHAR2(50)
+ ,dml_flag                        VARCHAR2(1)
  ,version                         NUMBER
 );

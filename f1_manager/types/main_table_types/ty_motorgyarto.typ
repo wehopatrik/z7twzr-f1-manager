@@ -1,7 +1,7 @@
 CREATE OR REPLACE TYPE ty_motorgyarto AS OBJECT
 (
   motorgyarto_id  NUMBER,
-  motorgyarto_nev VARCHAR(30),
+  motorgyarto_nev VARCHAR2(30),
 
   CONSTRUCTOR FUNCTION ty_motorgyarto RETURN SELF AS RESULT,
   CONSTRUCTOR FUNCTION ty_motorgyarto(motorgyarto_id VARCHAR2)

@@ -3,7 +3,7 @@ CREATE OR REPLACE PACKAGE pkg_motorgyarto IS
   PROCEDURE uj_motorgyarto(p_motorgyarto_nev IN VARCHAR2);
 
   PROCEDURE motorgyarto_modositas(p_motorgyarto_id  IN NUMBER
-                                 ,p_motorgyarto_nev IN VARCHAR2);
+                                 ,p_motorgyarto_nev IN VARCHAR2 DEFAULT NULL);
 
   PROCEDURE motorgyarto_adatok(p_motorgyarto_id IN NUMBER);
     
@@ -44,13 +44,20 @@ CREATE OR REPLACE PACKAGE BODY pkg_motorgyarto IS
 
   -- modositas a motorgyarto tablaban
   PROCEDURE motorgyarto_modositas(p_motorgyarto_id  IN NUMBER
-                                 ,p_motorgyarto_nev IN VARCHAR2) IS
+                                 ,p_motorgyarto_nev IN VARCHAR2 DEFAULT NULL) IS
   
     c_proc_nev CONSTANT VARCHAR(30) := 'motorgyarto_modositas';
-  
+    uj_motorgyarto_nev VARCHAR2(30);
+    
   BEGIN
+    uj_motorgyarto_nev := p_motorgyarto_nev;  
+  
+    IF p_motorgyarto_nev IS NULL THEN
+      SELECT m.motorgyarto_nev INTO uj_motorgyarto_nev FROM motorgyarto m WHERE m.motorgyarto_id = p_motorgyarto_id;
+    END IF;
+  
     UPDATE motorgyarto m
-       SET m.motorgyarto_nev = p_motorgyarto_nev
+       SET m.motorgyarto_nev = uj_motorgyarto_nev
      WHERE m.motorgyarto_id = p_motorgyarto_id;
   
   EXCEPTION

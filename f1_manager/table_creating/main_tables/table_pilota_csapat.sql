@@ -7,8 +7,8 @@ CREATE TABLE pilota_csapat(
  ,meddig                          DATE
  ,modositva                       DATE           DEFAULT SYSDATE NOT NULL
  ,letrehozva                      DATE           DEFAULT SYSDATE NOT NULL
- ,mod_felhasznalo                 VARCHAR(50)
- ,dml_flag                        VARCHAR(1)
+ ,mod_felhasznalo                 VARCHAR2(50)
+ ,dml_flag                        VARCHAR2(1)
  ,version                         NUMBER
 ) 
 TABLESPACE users;

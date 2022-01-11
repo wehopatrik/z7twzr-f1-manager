@@ -9,7 +9,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_szezon_adatok IS
   gc_pkg_nev CONSTANT VARCHAR2(30) := 'pkg_szezon_adatok';
 
   PROCEDURE szezon_adatok(p_szezon_ev IN NUMBER) IS
-    c_proc_nev CONSTANT VARCHAR(30) := 'szezon_adatok';
+    c_proc_nev CONSTANT VARCHAR2(30) := 'szezon_adatok';
     c_list ty_futam_adatok_l;
     
   BEGIN

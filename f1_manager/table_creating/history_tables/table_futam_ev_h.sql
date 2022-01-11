@@ -6,11 +6,11 @@ CREATE TABLE futam_ev_h(
  ,kor_szam                        NUMBER
  ,nyertes_szemely_id              NUMBER
  ,leggyorsabb_szemely_id          NUMBER
- ,leggyorsabb_ido                 VARCHAR(10)
+ ,leggyorsabb_ido                 VARCHAR2(10)
  ,idopont                         DATE
  ,modositva                       DATE
  ,letrehozva                      DATE
- ,mod_felhasznalo                 VARCHAR(50)
- ,dml_flag                        VARCHAR(1)
+ ,mod_felhasznalo                 VARCHAR2(50)
+ ,dml_flag                        VARCHAR2(1)
  ,version                         NUMBER
 );

@@ -7,7 +7,7 @@ CREATE OR REPLACE TYPE ty_futam_ev AS OBJECT
   kor_szam               NUMBER,
   nyertes_szemely_id     NUMBER,
   leggyorsabb_szemely_id NUMBER,
-  leggyorsabb_ido        VARCHAR(10),
+  leggyorsabb_ido        VARCHAR2(10),
   idopont                DATE,
 
   CONSTRUCTOR FUNCTION ty_futam_ev RETURN SELF AS RESULT,

@@ -10,14 +10,14 @@ CREATE OR REPLACE PACKAGE pkg_futam_ev IS
                        ,p_idopont                DATE);
 
   PROCEDURE futam_ev_modositas(p_futam_ev_id            IN NUMBER
-                              ,p_futam_id               IN NUMBER
-                              ,p_hanyadik_futam         IN NUMBER
-                              ,p_palyahossz             IN NUMBER
-                              ,p_kor_szam               IN NUMBER
-                              ,p_nyertes_szemely_id     IN NUMBER
-                              ,p_leggyorsabb_szemely_id IN NUMBER
-                              ,p_leggyorsabb_ido        IN VARCHAR2
-                              ,p_idopont                DATE);
+                              ,p_futam_id               IN NUMBER DEFAULT NULL
+                              ,p_hanyadik_futam         IN NUMBER DEFAULT NULL
+                              ,p_palyahossz             IN NUMBER DEFAULT NULL
+                              ,p_kor_szam               IN NUMBER DEFAULT NULL
+                              ,p_nyertes_szemely_id     IN NUMBER DEFAULT NULL
+                              ,p_leggyorsabb_szemely_id IN NUMBER DEFAULT NULL
+                              ,p_leggyorsabb_ido        IN VARCHAR2 DEFAULT NULL
+                              ,p_idopont                DATE DEFAULT NULL);
 
   PROCEDURE torles_futam_ev(p_futam_ev_id IN NUMBER);
   
@@ -118,27 +118,69 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_ev IS
 
   -- futam_ev modositas a futam_ev tablaban
   PROCEDURE futam_ev_modositas(p_futam_ev_id            IN NUMBER
-                              ,p_futam_id               IN NUMBER
-                              ,p_hanyadik_futam         IN NUMBER
-                              ,p_palyahossz             IN NUMBER
-                              ,p_kor_szam               IN NUMBER
-                              ,p_nyertes_szemely_id     IN NUMBER
-                              ,p_leggyorsabb_szemely_id IN NUMBER
-                              ,p_leggyorsabb_ido        IN VARCHAR2
-                              ,p_idopont                DATE) IS
+                              ,p_futam_id               IN NUMBER DEFAULT NULL
+                              ,p_hanyadik_futam         IN NUMBER DEFAULT NULL
+                              ,p_palyahossz             IN NUMBER DEFAULT NULL
+                              ,p_kor_szam               IN NUMBER DEFAULT NULL
+                              ,p_nyertes_szemely_id     IN NUMBER DEFAULT NULL
+                              ,p_leggyorsabb_szemely_id IN NUMBER DEFAULT NULL
+                              ,p_leggyorsabb_ido        IN VARCHAR2 DEFAULT NULL
+                              ,p_idopont                DATE DEFAULT NULL) IS
   
     c_proc_nev CONSTANT VARCHAR(30) := 'futam_ev_modositas';
+    uj_futam_id NUMBER;
+    uj_hanyadik_futam NUMBER;
+    uj_palyahossz NUMBER;
+    uj_kor_szam NUMBER;
+    uj_nyertes_szemely_id NUMBER;
+    uj_leggyorsabb_szemely_id NUMBER;
+    uj_leggyorsabb_ido VARCHAR2(10);
+    uj_idopont DATE;
   
   BEGIN
+    uj_futam_id := p_futam_id;
+    uj_hanyadik_futam := p_hanyadik_futam;
+    uj_palyahossz := p_palyahossz;
+    uj_kor_szam := p_kor_szam;
+    uj_nyertes_szemely_id := p_nyertes_szemely_id;
+    uj_leggyorsabb_szemely_id := p_leggyorsabb_szemely_id;
+    uj_leggyorsabb_ido := p_leggyorsabb_ido;
+    uj_idopont := p_idopont;
+    
+    IF p_futam_id IS NULL THEN
+      SELECT fe.futam_id INTO uj_futam_id FROM futam_ev fe WHERE fe.futam_ev_id = p_futam_ev_id;
+    END IF;
+    IF p_hanyadik_futam IS NULL THEN
+      SELECT fe.hanyadik_futam INTO uj_hanyadik_futam FROM futam_ev fe WHERE fe.futam_ev_id = p_futam_ev_id;
+    END IF;
+    IF p_palyahossz IS NULL THEN
+      SELECT fe.palyahossz INTO uj_palyahossz FROM futam_ev fe WHERE fe.futam_ev_id = p_futam_ev_id;
+    END IF;
+    IF p_kor_szam IS NULL THEN
+      SELECT fe.kor_szam INTO uj_kor_szam FROM futam_ev fe WHERE fe.futam_ev_id = p_futam_ev_id;
+    END IF;
+    IF p_nyertes_szemely_id IS NULL THEN
+      SELECT fe.nyertes_szemely_id INTO uj_nyertes_szemely_id FROM futam_ev fe WHERE fe.futam_ev_id = p_futam_ev_id;
+    END IF;
+    IF p_leggyorsabb_szemely_id IS NULL THEN
+      SELECT fe.leggyorsabb_szemely_id INTO uj_leggyorsabb_szemely_id FROM futam_ev fe WHERE fe.futam_ev_id = p_futam_ev_id;
+    END IF;
+    IF p_leggyorsabb_ido IS NULL THEN
+      SELECT fe.leggyorsabb_ido INTO uj_leggyorsabb_ido FROM futam_ev fe WHERE fe.futam_ev_id = p_futam_ev_id;
+    END IF;
+    IF p_idopont IS NULL THEN
+      SELECT fe.idopont INTO uj_idopont FROM futam_ev fe WHERE fe.futam_ev_id = p_futam_ev_id;
+    END IF;
+  
     UPDATE futam_ev fe
-       SET fe.futam_id               = p_futam_id
-          ,fe.hanyadik_futam         = p_hanyadik_futam
-          ,fe.palyahossz             = p_palyahossz
-          ,fe.kor_szam               = p_kor_szam
-          ,fe.nyertes_szemely_id     = p_nyertes_szemely_id
-          ,fe.leggyorsabb_szemely_id = p_leggyorsabb_szemely_id
-          ,fe.leggyorsabb_ido        = p_leggyorsabb_ido
-          ,fe.idopont                = p_idopont
+       SET fe.futam_id               = uj_futam_id
+          ,fe.hanyadik_futam         = uj_hanyadik_futam
+          ,fe.palyahossz             = uj_palyahossz
+          ,fe.kor_szam               = uj_kor_szam
+          ,fe.nyertes_szemely_id     = uj_nyertes_szemely_id
+          ,fe.leggyorsabb_szemely_id = uj_leggyorsabb_szemely_id
+          ,fe.leggyorsabb_ido        = uj_leggyorsabb_ido
+          ,fe.idopont                = uj_idopont
      WHERE fe.futam_ev_id = p_futam_ev_id;
   
   EXCEPTION

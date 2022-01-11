@@ -7,11 +7,11 @@ CREATE OR REPLACE PACKAGE pkg_pilota_osszes IS
                             ,p_nemzetiseg  IN VARCHAR2);
 
   PROCEDURE pilota_osszes_modositas(p_szemely_id  IN NUMBER
-                                   ,p_szemely_nev IN VARCHAR2
-                                   ,p_szul_datum  IN DATE
-                                   ,p_szul_orszag IN VARCHAR2
-                                   ,p_szul_hely   IN VARCHAR2
-                                   ,p_nemzetiseg  IN VARCHAR2);
+                                   ,p_szemely_nev IN VARCHAR2 DEFAULT NULL
+                                   ,p_szul_datum  IN DATE DEFAULT NULL
+                                   ,p_szul_orszag IN VARCHAR2 DEFAULT NULL
+                                   ,p_szul_hely   IN VARCHAR2 DEFAULT NULL
+                                   ,p_nemzetiseg  IN VARCHAR2 DEFAULT NULL);
                                    
   PROCEDURE pilota_osszes_adatok(p_szemely_id IN NUMBER);
 
@@ -83,21 +83,48 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_osszes IS
 
   -- pilota modositas a pilota_osszes tablaban
   PROCEDURE pilota_osszes_modositas(p_szemely_id  IN NUMBER
-                                   ,p_szemely_nev IN VARCHAR2
-                                   ,p_szul_datum  IN DATE
-                                   ,p_szul_orszag IN VARCHAR2
-                                   ,p_szul_hely   IN VARCHAR2
-                                   ,p_nemzetiseg  IN VARCHAR2) IS
+                                   ,p_szemely_nev IN VARCHAR2 DEFAULT NULL
+                                   ,p_szul_datum  IN DATE DEFAULT NULL
+                                   ,p_szul_orszag IN VARCHAR2 DEFAULT NULL
+                                   ,p_szul_hely   IN VARCHAR2 DEFAULT NULL
+                                   ,p_nemzetiseg  IN VARCHAR2 DEFAULT NULL) IS
   
     c_proc_nev CONSTANT VARCHAR(30) := 'pilota_osszes_modositas';
+    uj_szemely_nev VARCHAR2(40);
+    uj_szul_datum DATE;
+    uj_szul_orszag VARCHAR2(40);
+    uj_szul_hely VARCHAR2(40);
+    uj_nemzetiseg VARCHAR2(40);
   
   BEGIN
+    uj_szemely_nev := p_szemely_nev;
+    uj_szul_datum := p_szul_datum;
+    uj_szul_orszag := p_szul_orszag;
+    uj_szul_hely := p_szul_hely;
+    uj_nemzetiseg := p_nemzetiseg; 
+  
+    IF p_szemely_nev IS NULL THEN
+      SELECT po.szemely_nev INTO uj_szemely_nev FROM pilota_osszes po WHERE po.szemely_id = p_szemely_id;
+    END IF;
+    IF p_szul_datum IS NULL THEN
+      SELECT po.szul_datum INTO uj_szul_datum FROM pilota_osszes po WHERE po.szemely_id = p_szemely_id;
+    END IF;
+    IF p_szul_orszag IS NULL THEN
+      SELECT po.szul_orszag INTO uj_szul_orszag FROM pilota_osszes po WHERE po.szemely_id = p_szemely_id;
+    END IF;
+    IF p_szul_hely IS NULL THEN
+      SELECT po.szul_hely INTO uj_szul_hely FROM pilota_osszes po WHERE po.szemely_id = p_szemely_id;
+    END IF;
+    IF p_nemzetiseg IS NULL THEN
+      SELECT po.nemzetiseg INTO uj_nemzetiseg FROM pilota_osszes po WHERE po.szemely_id = p_szemely_id;
+    END IF;
+  
     UPDATE pilota_osszes po
-       SET po.szemely_nev = p_szemely_nev
-          ,po.szul_datum  = p_szul_datum
-          ,po.szul_orszag = p_szul_orszag
-          ,po.szul_hely   = p_szul_hely
-          ,po.nemzetiseg  = p_szul_hely
+       SET po.szemely_nev = uj_szemely_nev
+          ,po.szul_datum  = uj_szul_datum
+          ,po.szul_orszag = uj_szul_orszag
+          ,po.szul_hely   = uj_szul_hely
+          ,po.nemzetiseg  = uj_nemzetiseg
      WHERE po.szemely_id = p_szemely_id;
   
   EXCEPTION
