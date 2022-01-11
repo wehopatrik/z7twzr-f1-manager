@@ -38,7 +38,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_ev IS
                        ,p_leggyorsabb_szemely_id IN NUMBER
                        ,p_leggyorsabb_ido        IN VARCHAR2
                        ,p_idopont                DATE) IS
-    c_proc_nev CONSTANT VARCHAR(30) := 'uj_futam_ev';
+    c_proc_nev CONSTANT VARCHAR2(30) := 'uj_futam_ev';
   BEGIN
     INSERT INTO futam_ev
       (futam_id
@@ -127,7 +127,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_ev IS
                               ,p_leggyorsabb_ido        IN VARCHAR2 DEFAULT NULL
                               ,p_idopont                DATE DEFAULT NULL) IS
   
-    c_proc_nev CONSTANT VARCHAR(30) := 'futam_ev_modositas';
+    c_proc_nev CONSTANT VARCHAR2(30) := 'futam_ev_modositas';
     uj_futam_id NUMBER;
     uj_hanyadik_futam NUMBER;
     uj_palyahossz NUMBER;
@@ -247,7 +247,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_ev IS
   -- futam_ev torles a futam_ev tablabol
   PROCEDURE torles_futam_ev(p_futam_ev_id IN NUMBER) IS
   
-    c_proc_nev CONSTANT VARCHAR(30) := 'torles_futam_ev';
+    c_proc_nev CONSTANT VARCHAR2(30) := 'torles_futam_ev';
   
   BEGIN
     DELETE FROM futam_ev fe WHERE fe.futam_ev_id LIKE p_futam_ev_id;
@@ -277,7 +277,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_ev IS
   
   -- futam_ev tabla kiiratasa vagy egy futam_ev kiiratasa
   PROCEDURE futam_ev_adatok(p_futam_ev_id IN NUMBER) IS
-    c_proc_nev CONSTANT VARCHAR(30) := 'futam_ev_adatok';
+    c_proc_nev CONSTANT VARCHAR2(30) := 'futam_ev_adatok';
     c_list ty_futam_ev_l;
     
   BEGIN

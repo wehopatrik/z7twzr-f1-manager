@@ -27,7 +27,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_osszes IS
                             ,p_szul_orszag IN VARCHAR2
                             ,p_szul_hely   IN VARCHAR2
                             ,p_nemzetiseg  IN VARCHAR2) IS
-    c_proc_nev CONSTANT VARCHAR(30) := 'uj_pilota_osszes';
+    c_proc_nev CONSTANT VARCHAR2(30) := 'uj_pilota_osszes';
   BEGIN
     INSERT INTO pilota_osszes
       (szemely_nev
@@ -89,7 +89,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_osszes IS
                                    ,p_szul_hely   IN VARCHAR2 DEFAULT NULL
                                    ,p_nemzetiseg  IN VARCHAR2 DEFAULT NULL) IS
   
-    c_proc_nev CONSTANT VARCHAR(30) := 'pilota_osszes_modositas';
+    c_proc_nev CONSTANT VARCHAR2(30) := 'pilota_osszes_modositas';
     uj_szemely_nev VARCHAR2(40);
     uj_szul_datum DATE;
     uj_szul_orszag VARCHAR2(40);
@@ -172,7 +172,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_osszes IS
   
    -- pilota_osszes tabla kiiratasa vagy egy pilota_osszes kiiratasa
   PROCEDURE pilota_osszes_adatok(p_szemely_id IN NUMBER) IS
-    c_proc_nev CONSTANT VARCHAR(30) := 'pilota_osszes_adatok';
+    c_proc_nev CONSTANT VARCHAR2(30) := 'pilota_osszes_adatok';
     c_list ty_pilota_osszes_l;
     
   BEGIN

@@ -15,7 +15,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_motorgyarto IS
 
   -- uj motorgyarto a motorgyarto tablaba
   PROCEDURE uj_motorgyarto(p_motorgyarto_nev IN VARCHAR2) IS
-    c_proc_nev CONSTANT VARCHAR(30) := 'uj_motorgyarto';
+    c_proc_nev CONSTANT VARCHAR2(30) := 'uj_motorgyarto';
   BEGIN
     INSERT INTO motorgyarto (motorgyarto_nev) VALUES (p_motorgyarto_nev);
   
@@ -91,7 +91,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_motorgyarto IS
   
   -- motorgyarto tabla kiiratasa vagy egy motorgyarto kiiratasa
   PROCEDURE motorgyarto_adatok(p_motorgyarto_id IN NUMBER) IS
-    c_proc_nev CONSTANT VARCHAR(30) := 'motorgyarto_adatok';
+    c_proc_nev CONSTANT VARCHAR2(30) := 'motorgyarto_adatok';
     c_list ty_motorgyarto_l;
     
   BEGIN

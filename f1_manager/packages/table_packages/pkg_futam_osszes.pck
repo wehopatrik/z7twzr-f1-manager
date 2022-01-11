@@ -24,7 +24,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_osszes IS
                            ,p_futam_orszag IN VARCHAR2 
                            ,p_futam_hely   IN VARCHAR2
                            ,p_palya_nev    IN VARCHAR2) IS
-    c_proc_nev CONSTANT VARCHAR(30) := 'uj_futam_osszes';
+    c_proc_nev CONSTANT VARCHAR2(30) := 'uj_futam_osszes';
   BEGIN
     INSERT INTO futam_osszes
       (futam_nev
@@ -79,7 +79,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_osszes IS
                                   ,p_futam_hely   IN VARCHAR2 DEFAULT NULL
                                   ,p_palya_nev    IN VARCHAR2 DEFAULT NULL) IS
   
-    c_proc_nev CONSTANT VARCHAR(30) := 'futam_osszes_modositas';
+    c_proc_nev CONSTANT VARCHAR2(30) := 'futam_osszes_modositas';
     uj_futam_nev VARCHAR2(40);
     uj_futam_orszag VARCHAR2(40);
     uj_futam_hely VARCHAR2(40);
@@ -153,7 +153,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_osszes IS
   
   -- futam_osszes tabla kiiratasa vagy egy futam_osszes kiiratasa
   PROCEDURE futam_osszes_adatok(p_futam_id IN NUMBER) IS
-    c_proc_nev CONSTANT VARCHAR(30) := 'futam_osszes_adatok';
+    c_proc_nev CONSTANT VARCHAR2(30) := 'futam_osszes_adatok';
     c_list ty_futam_osszes_l;
     
   BEGIN

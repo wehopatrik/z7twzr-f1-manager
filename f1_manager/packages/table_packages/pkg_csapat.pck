@@ -181,7 +181,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_csapat IS
   
   -- csapat tabla kiiratasa vagy egy csapat kiiratasa
   PROCEDURE csapat_adatok(p_csapat_id IN NUMBER) IS
-    c_proc_nev CONSTANT VARCHAR(30) := 'csapat_adatok';
+    c_proc_nev CONSTANT VARCHAR2(30) := 'csapat_adatok';
     c_list ty_csapat_l;
     
   BEGIN

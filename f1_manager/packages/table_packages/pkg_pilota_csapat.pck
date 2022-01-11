@@ -27,7 +27,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_csapat IS
                             ,p_pilota_szam IN NUMBER
                             ,p_mettol      IN DATE
                             ,p_meddig      IN DATE) IS
-    c_proc_nev CONSTANT VARCHAR(30) := 'uj_pilota_csapat';
+    c_proc_nev CONSTANT VARCHAR2(30) := 'uj_pilota_csapat';
   BEGIN
     INSERT INTO pilota_csapat
       (szemely_id
@@ -86,7 +86,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_csapat IS
                                    ,p_mettol           IN DATE DEFAULT NULL
                                    ,p_meddig           IN DATE DEFAULT NULL) IS
   
-    c_proc_nev CONSTANT VARCHAR(30) := 'pilota_csapat_modositas';
+    c_proc_nev CONSTANT VARCHAR2(30) := 'pilota_csapat_modositas';
     uj_szemely_id NUMBER;
     uj_csapat_id NUMBER;
     uj_pilota_szam NUMBER;
@@ -169,7 +169,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_csapat IS
   
   -- pilota_csapat tabla kiiratasa vagy egy pilota_csapat kiiratasa
   PROCEDURE pilota_csapat_adatok(p_pilota_csapat_id IN NUMBER) IS
-    c_proc_nev CONSTANT VARCHAR(30) := 'pilota_csapat_adatok';
+    c_proc_nev CONSTANT VARCHAR2(30) := 'pilota_csapat_adatok';
     c_list ty_pilota_csapat_l;
     
   BEGIN
