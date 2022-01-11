@@ -46,4 +46,24 @@ BEGIN
                                      p_meddig      => null);
 END;
 /
+-- új futam az összes eddigi futamok közé
+BEGIN
+  pkg_futam_osszes.uj_futam_osszes(p_futam_nev    => 'Hawaii Nagydíj',
+                                   p_futam_orszag => 'Hawaii',
+                                   p_futam_hely   => 'Pahoa',
+                                   p_palya_nev    => 'Hawaii Pahoa Circuit');
+END;
+/
+-- új futam 2022-es évre
+BEGIN
+  pkg_futam_ev.uj_futam_ev(p_futam_id               => 28,
+                           p_hanyadik_futam         => 24,
+                           p_palyahossz             => 4.612,
+                           p_kor_szam               => null,
+                           p_nyertes_szemely_id     => null,
+                           p_leggyorsabb_szemely_id => null,
+                           p_leggyorsabb_ido        => null,
+                           p_idopont                => DATE '2022-12-04');
+END;
+/
 COMMIT;

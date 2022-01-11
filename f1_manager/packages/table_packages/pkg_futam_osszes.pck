@@ -40,6 +40,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_osszes IS
   EXCEPTION
     WHEN no_data_found THEN
       pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_okozat => SQLERRM,
                                  p_hiba_ertek  => 'p_futam_nev = ' ||
                                                   p_futam_nev || chr(10) ||
                                                   'p_futam_orszag = ' ||
@@ -55,6 +56,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_osszes IS
       RAISE pkg_kivetelek.exc_nincs_adat_hiba;
     WHEN OTHERS THEN
       pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_okozat => SQLERRM,
                                  p_hiba_ertek  => 'p_futam_nev = ' ||
                                                   p_futam_nev || chr(10) ||
                                                   'p_futam_orszag = ' ||
@@ -90,6 +92,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_osszes IS
   EXCEPTION
     WHEN no_data_found THEN
       pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_okozat => SQLERRM,
                                  p_hiba_ertek  => 'p_futam_id = ' ||
                                                   p_futam_id || chr(10) ||
                                                   'p_futam_nev = ' ||
@@ -107,6 +110,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_osszes IS
       RAISE pkg_kivetelek.exc_nincs_adat_hiba;
     WHEN OTHERS THEN
       pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_okozat => SQLERRM,
                                  p_hiba_ertek  => 'p_futam_id = ' ||
                                                   p_futam_id || chr(10) ||
                                                   'p_futam_nev = ' ||
@@ -163,12 +167,14 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_osszes IS
     EXCEPTION
       WHEN no_data_found THEN
         pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                   p_hiba_okozat => SQLERRM,
                                    p_hiba_ertek  => 'p_futam_id = ' || p_futam_id,
                                    p_api         => gc_pkg_nev || '.' || c_proc_nev);
         raise_application_error(pkg_kivetelek.gc_nincs_adat_hiba_code, 'Nincs adat az adott futamra.');
         RAISE pkg_kivetelek.exc_nincs_adat_hiba;
       WHEN OTHERS THEN
         pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                   p_hiba_okozat => SQLERRM,
                                    p_hiba_ertek  => 'p_futam_id = ' || p_futam_id,
                                    p_api         => gc_pkg_nev || '.' || c_proc_nev);
         raise_application_error(pkg_kivetelek.gc_altalanos_hiba_code, 'Altalanos hiba.');

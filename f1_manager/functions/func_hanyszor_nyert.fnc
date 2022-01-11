@@ -24,14 +24,16 @@ BEGIN
   EXCEPTION
     WHEN no_data_found THEN
       pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
-                                   p_hiba_ertek  => 'p_szezon_ev = ' || p_szezon_ev || chr(10) || 'p_pilota_szam = ' || p_pilota_szam,
-                                   p_api         => func_nev);
+                                 p_hiba_okozat => SQLERRM,
+                                 p_hiba_ertek  => 'p_szezon_ev = ' || p_szezon_ev || chr(10) || 'p_pilota_szam = ' || p_pilota_szam,
+                                 p_api         => func_nev);
       raise_application_error(pkg_kivetelek.gc_nincs_adat_hiba_code, 'Nem talalhato valamilyen adat.');
       RAISE pkg_kivetelek.exc_nincs_adat_hiba;
     WHEN OTHERS THEN
       pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
-                                   p_hiba_ertek  => 'p_szezon_ev = ' || p_szezon_ev,
-                                   p_api         => func_nev);
+                                 p_hiba_okozat => SQLERRM,
+                                 p_hiba_ertek  => 'p_szezon_ev = ' || p_szezon_ev,
+                                 p_api         => func_nev);
       raise_application_error(pkg_kivetelek.gc_altalanos_hiba_code, 'Altalanos hiba.');
       RAISE pkg_kivetelek.exc_altalanos_hiba;
       

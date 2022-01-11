@@ -44,6 +44,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_csapat IS
   EXCEPTION
     WHEN no_data_found THEN
       pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_okozat => SQLERRM,
                                  p_hiba_ertek  => 'p_szemely_id = ' ||
                                                   p_szemely_id || chr(10) ||
                                                   'p_csapat_id = ' ||
@@ -60,6 +61,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_csapat IS
       RAISE pkg_kivetelek.exc_nincs_adat_hiba;
     WHEN OTHERS THEN
       pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_okozat => SQLERRM,
                                  p_hiba_ertek  => 'p_szemely_id = ' ||
                                                   p_szemely_id || chr(10) ||
                                                   'p_csapat_id = ' ||
@@ -98,6 +100,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_csapat IS
   EXCEPTION
     WHEN no_data_found THEN
       pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_okozat => SQLERRM,
                                  p_hiba_ertek  => 'p_pilota_csapat_id = ' ||
                                                   p_pilota_csapat_id ||
                                                   chr(10) ||
@@ -117,6 +120,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_csapat IS
       RAISE pkg_kivetelek.exc_nincs_adat_hiba;
     WHEN OTHERS THEN
       pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_okozat => SQLERRM,
                                  p_hiba_ertek  => 'p_pilota_csapat_id = ' ||
                                                   p_pilota_csapat_id ||
                                                   chr(10) ||
@@ -178,12 +182,14 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_csapat IS
     EXCEPTION
       WHEN no_data_found THEN
         pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                   p_hiba_okozat => SQLERRM,
                                    p_hiba_ertek  => 'p_pilota_csapat_id = ' || p_pilota_csapat_id,
                                    p_api         => gc_pkg_nev || '.' || c_proc_nev);
         raise_application_error(pkg_kivetelek.gc_nincs_adat_hiba_code, 'Nincs adat az adott futamra.');
         RAISE pkg_kivetelek.exc_nincs_adat_hiba;
       WHEN OTHERS THEN
         pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                   p_hiba_okozat => SQLERRM,
                                    p_hiba_ertek  => 'p_pilota_csapat_id = ' || p_pilota_csapat_id,
                                    p_api         => gc_pkg_nev || '.' || c_proc_nev);
         raise_application_error(pkg_kivetelek.gc_altalanos_hiba_code, 'Altalanos hiba.');
