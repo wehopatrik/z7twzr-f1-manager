@@ -1,0 +1,23 @@
+BEGIN
+  pkg_motorgyarto.motorgyarto_adatok(1);
+END;
+/
+BEGIN
+  pkg_csapat.csapat_adatok(5);
+END;
+/
+BEGIN
+  pkg_pilota_osszes.pilota_osszes_adatok(10);
+END;
+/
+BEGIN
+  pkg_pilota_csapat.pilota_csapat_adatok(3);
+END;
+/
+BEGIN
+  pkg_futam_osszes.futam_osszes_adatok(11);
+END;
+/
+BEGIN
+  pkg_futam_ev.futam_ev_adatok(22);
+END;
