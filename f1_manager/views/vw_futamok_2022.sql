@@ -16,5 +16,5 @@ LEFT JOIN pilota_csapat pcs ON po.szemely_id = pcs.szemely_id
 LEFT JOIN csapat cs ON pcs.csapat_id = cs.csapat_id
 WHERE (extract(YEAR from fe.idopont) = 2022)
 --AND (pcs.mettol BETWEEN to_date('1950-01-01', 'yyyy-mm-dd') AND to_date('2022-12-31', 'yyyy-mm-dd'))
---AND (nvl(pcs.meddig, SYSDATE) BETWEEN to_date('2022-01-01', 'yyyy-mm-dd') AND SYSDATE)
+--AND (nvl(pcs.meddig, to_date('2022-12-31', 'yyyy-mm-dd')) BETWEEN to_date('2022-01-01', 'yyyy-mm-dd') AND to_date('2022-12-31', 'yyyy-mm-dd'))
 ORDER BY fe.idopont;

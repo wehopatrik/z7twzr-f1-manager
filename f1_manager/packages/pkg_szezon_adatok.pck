@@ -28,7 +28,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_szezon_adatok IS
       JOIN csapat cs ON cs.csapat_id = pcs.csapat_id 
     WHERE (extract(YEAR FROM fe.idopont) = p_szezon_ev)
     AND (pcs.mettol BETWEEN to_date('1950-01-01', 'yyyy-mm-dd') AND to_date(p_szezon_ev || '-12-31', 'yyyy-mm-dd'))
-    AND (nvl(pcs.meddig, SYSDATE) BETWEEN to_date(p_szezon_ev || '-01-01', 'yyyy-mm-dd') AND SYSDATE)
+    AND (nvl(pcs.meddig, to_date(p_szezon_ev || '-12-31', 'yyyy-mm-dd')) BETWEEN to_date(p_szezon_ev || '-01-01', 'yyyy-mm-dd') AND to_date(p_szezon_ev || '-12-31', 'yyyy-mm-dd'))
     ORDER BY fe.idopont;
 
     FOR i IN 1 .. c_list.count

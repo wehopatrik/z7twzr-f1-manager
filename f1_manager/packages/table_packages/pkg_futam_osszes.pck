@@ -11,6 +11,8 @@ CREATE OR REPLACE PACKAGE pkg_futam_osszes IS
                                   ,p_futam_hely   IN VARCHAR2 DEFAULT NULL
                                   ,p_palya_nev    IN VARCHAR2 DEFAULT NULL);
                                   
+  PROCEDURE torles_futam_osszes(p_futam_id IN NUMBER);
+  
   PROCEDURE futam_osszes_adatok(p_futam_id IN NUMBER);
 
 END pkg_futam_osszes;
@@ -150,6 +152,37 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_osszes IS
                               'Altalanos hiba.');
       RAISE pkg_kivetelek.exc_altalanos_hiba;
   END futam_osszes_modositas;
+  
+  -- futam torles a futam_osszes tablabol
+  PROCEDURE torles_futam_osszes(p_futam_id IN NUMBER) IS
+  
+    c_proc_nev CONSTANT VARCHAR2(30) := 'torles_futam_osszes';
+  
+  BEGIN
+    DELETE FROM futam_osszes fo WHERE fo.futam_id LIKE p_futam_id;
+  
+  EXCEPTION
+    WHEN no_data_found THEN
+      pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_okozat => SQLERRM,
+                                 p_hiba_ertek  => 'p_futam_id = ' ||
+                                                  p_futam_id,
+                                 p_api         => gc_pkg_nev || '.' ||
+                                                  c_proc_nev);
+      raise_application_error(pkg_kivetelek.gc_nincs_adat_hiba_code,
+                              'Nincs valamilyen adat.');
+      RAISE pkg_kivetelek.exc_nincs_adat_hiba;
+    WHEN OTHERS THEN
+      pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_okozat => SQLERRM,
+                                 p_hiba_ertek  => 'p_futam_id = ' ||
+                                                  p_futam_id,
+                                 p_api         => gc_pkg_nev || '.' ||
+                                                  c_proc_nev);
+      raise_application_error(pkg_kivetelek.gc_altalanos_hiba_code,
+                              'Altalanos hiba.');
+      RAISE pkg_kivetelek.exc_altalanos_hiba;
+  END torles_futam_osszes;
   
   -- futam_osszes tabla kiiratasa vagy egy futam_osszes kiiratasa
   PROCEDURE futam_osszes_adatok(p_futam_id IN NUMBER) IS

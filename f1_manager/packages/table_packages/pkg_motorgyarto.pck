@@ -5,6 +5,8 @@ CREATE OR REPLACE PACKAGE pkg_motorgyarto IS
   PROCEDURE motorgyarto_modositas(p_motorgyarto_id  IN NUMBER
                                  ,p_motorgyarto_nev IN VARCHAR2 DEFAULT NULL);
 
+  PROCEDURE torles_motorgyarto(p_motorgyarto_id IN NUMBER);
+  
   PROCEDURE motorgyarto_adatok(p_motorgyarto_id IN NUMBER);
     
 END pkg_motorgyarto;
@@ -88,6 +90,37 @@ CREATE OR REPLACE PACKAGE BODY pkg_motorgyarto IS
                               'Altalanos hiba.');
       RAISE pkg_kivetelek.exc_altalanos_hiba;
   END motorgyarto_modositas;
+  
+  -- motorgyarto torles a motorgyarto tablabol
+  PROCEDURE torles_motorgyarto(p_motorgyarto_id IN NUMBER) IS
+  
+    c_proc_nev CONSTANT VARCHAR2(30) := 'torles_motorgyarto';
+  
+  BEGIN
+    DELETE FROM motorgyarto m WHERE m.motorgyarto_id LIKE p_motorgyarto_id;
+  
+  EXCEPTION
+    WHEN no_data_found THEN
+      pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_okozat => SQLERRM,
+                                 p_hiba_ertek  => 'p_motorgyarto_id = ' ||
+                                                  p_motorgyarto_id,
+                                 p_api         => gc_pkg_nev || '.' ||
+                                                  c_proc_nev);
+      raise_application_error(pkg_kivetelek.gc_nincs_adat_hiba_code,
+                              'Nincs valamilyen adat.');
+      RAISE pkg_kivetelek.exc_nincs_adat_hiba;
+    WHEN OTHERS THEN
+      pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_okozat => SQLERRM,
+                                 p_hiba_ertek  => 'p_motorgyarto_id = ' ||
+                                                  p_motorgyarto_id,
+                                 p_api         => gc_pkg_nev || '.' ||
+                                                  c_proc_nev);
+      raise_application_error(pkg_kivetelek.gc_altalanos_hiba_code,
+                              'Altalanos hiba.');
+      RAISE pkg_kivetelek.exc_altalanos_hiba;
+  END torles_motorgyarto;
   
   -- motorgyarto tabla kiiratasa vagy egy motorgyarto kiiratasa
   PROCEDURE motorgyarto_adatok(p_motorgyarto_id IN NUMBER) IS

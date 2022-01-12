@@ -11,8 +11,8 @@ BEGIN
   JOIN futam_ev fe ON po.szemely_id = fe.nyertes_szemely_id
   JOIN pilota_csapat pcs ON pcs.szemely_id = po.szemely_id
   WHERE (pcs.pilota_szam LIKE p_pilota_szam) AND (extract(YEAR FROM fe.idopont) = p_szezon_ev)
-  AND (pcs.mettol BETWEEN to_date('1950-01-01', 'yyyy-mm-dd') AND to_date(p_szezon_ev || '-12-31', 'yyyy-mm-dd')) -- 1950 - p_szezon_ev_eleje
-  AND (nvl(pcs.meddig, SYSDATE) BETWEEN to_date(p_szezon_ev || '-01-01', 'yyyy-mm-dd') AND SYSDATE)               -- p_szezon_ev_vege - SYSDATE
+  AND (pcs.mettol BETWEEN to_date('1950-01-01', 'yyyy-mm-dd') AND to_date(p_szezon_ev || '-12-31', 'yyyy-mm-dd'))
+  AND (nvl(pcs.meddig, to_date(p_szezon_ev || '-12-31', 'yyyy-mm-dd')) BETWEEN to_date(p_szezon_ev || '-01-01', 'yyyy-mm-dd') AND to_date(p_szezon_ev || '-12-31', 'yyyy-mm-dd'))
   GROUP BY po.szemely_nev;
   
   -- ellenõrzésképpen

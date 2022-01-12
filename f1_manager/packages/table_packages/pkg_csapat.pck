@@ -13,6 +13,8 @@ CREATE OR REPLACE PACKAGE pkg_csapat IS
                             ,p_kozpont_hely   IN VARCHAR2 DEFAULT NULL
                             ,p_kozpont_orszag IN VARCHAR2 DEFAULT NULL);
   
+  PROCEDURE torles_csapat(p_csapat_id IN NUMBER);
+  
   PROCEDURE csapat_adatok(p_csapat_id IN NUMBER);
 
 END pkg_csapat;
@@ -178,6 +180,37 @@ CREATE OR REPLACE PACKAGE BODY pkg_csapat IS
                               'Altalanos hiba.');
       RAISE pkg_kivetelek.exc_altalanos_hiba;
   END csapat_modositas;
+  
+  -- csapat torles a csapat tablabol
+  PROCEDURE torles_csapat(p_csapat_id IN NUMBER) IS
+  
+    c_proc_nev CONSTANT VARCHAR2(30) := 'torles_csapat';
+  
+  BEGIN
+    DELETE FROM csapat cs WHERE cs.csapat_id LIKE p_csapat_id;
+  
+  EXCEPTION
+    WHEN no_data_found THEN
+      pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_okozat => SQLERRM,
+                                 p_hiba_ertek  => 'p_csapat_id = ' ||
+                                                  p_csapat_id,
+                                 p_api         => gc_pkg_nev || '.' ||
+                                                  c_proc_nev);
+      raise_application_error(pkg_kivetelek.gc_nincs_adat_hiba_code,
+                              'Nincs valamilyen adat.');
+      RAISE pkg_kivetelek.exc_nincs_adat_hiba;
+    WHEN OTHERS THEN
+      pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_okozat => SQLERRM,
+                                 p_hiba_ertek  => 'p_csapat_id = ' ||
+                                                  p_csapat_id,
+                                 p_api         => gc_pkg_nev || '.' ||
+                                                  c_proc_nev);
+      raise_application_error(pkg_kivetelek.gc_altalanos_hiba_code,
+                              'Altalanos hiba.');
+      RAISE pkg_kivetelek.exc_altalanos_hiba;
+  END torles_csapat;
   
   -- csapat tabla kiiratasa vagy egy csapat kiiratasa
   PROCEDURE csapat_adatok(p_csapat_id IN NUMBER) IS

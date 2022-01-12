@@ -13,6 +13,8 @@ CREATE OR REPLACE PACKAGE pkg_pilota_osszes IS
                                    ,p_szul_hely   IN VARCHAR2 DEFAULT NULL
                                    ,p_nemzetiseg  IN VARCHAR2 DEFAULT NULL);
                                    
+  PROCEDURE torles_pilota_osszes(p_szemely_id IN NUMBER);
+  
   PROCEDURE pilota_osszes_adatok(p_szemely_id IN NUMBER);
 
 END pkg_pilota_osszes;
@@ -169,6 +171,37 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_osszes IS
                               'Altalanos hiba.');
       RAISE pkg_kivetelek.exc_altalanos_hiba;
   END pilota_osszes_modositas;
+  
+  -- pilota torles a pilota_osszes tablabol
+  PROCEDURE torles_pilota_osszes(p_szemely_id IN NUMBER) IS
+  
+    c_proc_nev CONSTANT VARCHAR2(30) := 'torles_pilota_osszes';
+  
+  BEGIN
+    DELETE FROM pilota_osszes po WHERE po.szemely_id LIKE p_szemely_id;
+  
+  EXCEPTION
+    WHEN no_data_found THEN
+      pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_okozat => SQLERRM,
+                                 p_hiba_ertek  => 'p_szemely_id = ' ||
+                                                  p_szemely_id,
+                                 p_api         => gc_pkg_nev || '.' ||
+                                                  c_proc_nev);
+      raise_application_error(pkg_kivetelek.gc_nincs_adat_hiba_code,
+                              'Nincs valamilyen adat.');
+      RAISE pkg_kivetelek.exc_nincs_adat_hiba;
+    WHEN OTHERS THEN
+      pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_okozat => SQLERRM,
+                                 p_hiba_ertek  => 'p_szemely_id = ' ||
+                                                  p_szemely_id,
+                                 p_api         => gc_pkg_nev || '.' ||
+                                                  c_proc_nev);
+      raise_application_error(pkg_kivetelek.gc_altalanos_hiba_code,
+                              'Altalanos hiba.');
+      RAISE pkg_kivetelek.exc_altalanos_hiba;
+  END torles_pilota_osszes;
   
    -- pilota_osszes tabla kiiratasa vagy egy pilota_osszes kiiratasa
   PROCEDURE pilota_osszes_adatok(p_szemely_id IN NUMBER) IS

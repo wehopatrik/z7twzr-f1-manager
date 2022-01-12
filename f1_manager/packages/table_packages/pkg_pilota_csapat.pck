@@ -13,6 +13,8 @@ CREATE OR REPLACE PACKAGE pkg_pilota_csapat IS
                                    ,p_mettol           IN DATE DEFAULT NULL
                                    ,p_meddig           IN DATE DEFAULT NULL);
                                    
+  PROCEDURE torles_pilota_csapat(p_pilota_csapat_id IN NUMBER);
+  
   PROCEDURE pilota_csapat_adatok(p_pilota_csapat_id IN NUMBER);
 
 END pkg_pilota_csapat;
@@ -166,6 +168,37 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_csapat IS
                               'Altalanos hiba.');
       RAISE pkg_kivetelek.exc_altalanos_hiba;
   END pilota_csapat_modositas;
+  
+  -- pilota_csapat torles a pilota_csapat tablabol
+  PROCEDURE torles_pilota_csapat(p_pilota_csapat_id IN NUMBER) IS
+  
+    c_proc_nev CONSTANT VARCHAR2(30) := 'torles_pilota_csapat';
+  
+  BEGIN
+    DELETE FROM pilota_csapat pcs WHERE pcs.pilota_csapat_id LIKE p_pilota_csapat_id;
+  
+  EXCEPTION
+    WHEN no_data_found THEN
+      pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_okozat => SQLERRM,
+                                 p_hiba_ertek  => 'p_pilota_csapat_id = ' ||
+                                                  p_pilota_csapat_id,
+                                 p_api         => gc_pkg_nev || '.' ||
+                                                  c_proc_nev);
+      raise_application_error(pkg_kivetelek.gc_nincs_adat_hiba_code,
+                              'Nincs valamilyen adat.');
+      RAISE pkg_kivetelek.exc_nincs_adat_hiba;
+    WHEN OTHERS THEN
+      pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
+                                 p_hiba_okozat => SQLERRM,
+                                 p_hiba_ertek  => 'p_pilota_csapat_id = ' ||
+                                                  p_pilota_csapat_id,
+                                 p_api         => gc_pkg_nev || '.' ||
+                                                  c_proc_nev);
+      raise_application_error(pkg_kivetelek.gc_altalanos_hiba_code,
+                              'Altalanos hiba.');
+      RAISE pkg_kivetelek.exc_altalanos_hiba;
+  END torles_pilota_csapat;
   
   -- pilota_csapat tabla kiiratasa vagy egy pilota_csapat kiiratasa
   PROCEDURE pilota_csapat_adatok(p_pilota_csapat_id IN NUMBER) IS
