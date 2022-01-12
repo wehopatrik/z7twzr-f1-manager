@@ -18,4 +18,4 @@ Táblák magyarázata
 5. pilota_csapat - piloták csapattal való összerendelése
 6. futam_ev - összes eddigi évben rendezett futam felsorolása dátumokkal
 
-updated on 2022.01.04.
+README updated on 2022.01.04.
