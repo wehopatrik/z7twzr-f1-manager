@@ -82,36 +82,22 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_osszes IS
                                   ,p_palya_nev    IN VARCHAR2 DEFAULT NULL) IS
   
     c_proc_nev CONSTANT VARCHAR2(30) := 'futam_osszes_modositas';
-    uj_futam_nev VARCHAR2(40);
-    uj_futam_orszag VARCHAR2(40);
-    uj_futam_hely VARCHAR2(40);
-    uj_palya_nev VARCHAR2(40);
+    v_futam_nev VARCHAR2(40);
+    v_futam_orszag VARCHAR2(40);
+    v_futam_hely VARCHAR2(40);
+    v_palya_nev VARCHAR2(40);
     
   BEGIN
-    uj_futam_nev := p_futam_nev;
-    uj_futam_orszag := p_futam_orszag;
-    uj_futam_hely := p_futam_hely;
-    uj_palya_nev := p_palya_nev;
-  
-    IF p_futam_nev IS NULL THEN
-      SELECT fo.futam_nev INTO uj_futam_nev FROM futam_osszes fo WHERE fo.futam_id = p_futam_id;
-    END IF;
-    IF p_futam_orszag IS NULL THEN
-      SELECT fo.futam_orszag INTO uj_futam_orszag FROM futam_osszes fo WHERE fo.futam_id = p_futam_id;
-    END IF;
-    IF p_futam_hely IS NULL THEN
-      SELECT fo.futam_hely INTO uj_futam_hely FROM futam_osszes fo WHERE fo.futam_id = p_futam_id;
-    END IF;
-    IF p_palya_nev IS NULL THEN
-      SELECT fo.palya_nev INTO uj_palya_nev FROM futam_osszes fo WHERE fo.futam_id = p_futam_id;
-    END IF;
-    
+    SELECT nvl(p_futam_nev, fo.futam_nev), nvl(p_futam_orszag, fo.futam_orszag),
+           nvl(p_futam_hely, fo.futam_hely), nvl(p_palya_nev, fo.palya_nev)
+    INTO v_futam_nev, v_futam_orszag, v_futam_hely, v_palya_nev
+    FROM futam_osszes fo WHERE fo.futam_id = p_futam_id;   
     
     UPDATE futam_osszes fo
-       SET fo.futam_nev    = uj_futam_nev
-          ,fo.futam_orszag = uj_futam_orszag
-          ,fo.futam_hely   = uj_futam_hely
-          ,fo.palya_nev    = uj_palya_nev
+       SET fo.futam_nev    = v_futam_nev
+          ,fo.futam_orszag = v_futam_orszag
+          ,fo.futam_hely   = v_futam_hely
+          ,fo.palya_nev    = v_palya_nev
      WHERE fo.futam_id = p_futam_id;
   
   EXCEPTION

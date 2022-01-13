@@ -89,41 +89,25 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_csapat IS
                                    ,p_meddig           IN DATE DEFAULT NULL) IS
   
     c_proc_nev CONSTANT VARCHAR2(30) := 'pilota_csapat_modositas';
-    uj_szemely_id NUMBER;
-    uj_csapat_id NUMBER;
-    uj_pilota_szam NUMBER;
-    uj_mettol DATE;
-    uj_meddig DATE;
+    v_szemely_id NUMBER;
+    v_csapat_id NUMBER;
+    v_pilota_szam NUMBER;
+    v_mettol DATE;
+    v_meddig DATE;
     
   BEGIN
-    uj_szemely_id := p_szemely_id;
-    uj_csapat_id := p_csapat_id;
-    uj_pilota_szam := p_pilota_szam;
-    uj_mettol := p_mettol;
-    uj_meddig := p_meddig;
-    
-    IF p_szemely_id IS NULL THEN
-      SELECT pcs.szemely_id INTO uj_szemely_id FROM pilota_csapat pcs WHERE pcs.pilota_csapat_id = p_pilota_csapat_id;
-    END IF;
-    IF p_csapat_id IS NULL THEN
-      SELECT pcs.csapat_id INTO uj_csapat_id FROM pilota_csapat pcs WHERE pcs.pilota_csapat_id = p_pilota_csapat_id;
-    END IF;
-    IF p_pilota_szam IS NULL THEN
-      SELECT pcs.pilota_szam INTO uj_pilota_szam FROM pilota_csapat pcs WHERE pcs.pilota_csapat_id = p_pilota_csapat_id;
-    END IF;
-    IF p_mettol IS NULL THEN
-      SELECT pcs.mettol INTO uj_mettol FROM pilota_csapat pcs WHERE pcs.pilota_csapat_id = p_pilota_csapat_id;
-    END IF;
-    IF p_meddig IS NULL THEN
-      SELECT pcs.meddig INTO uj_meddig FROM pilota_csapat pcs WHERE pcs.pilota_csapat_id = p_pilota_csapat_id;
-    END IF;
+    SELECT nvl(p_szemely_id, pcs.szemely_id), nvl(p_csapat_id, pcs.csapat_id),
+           nvl(p_pilota_szam, pcs.pilota_szam), nvl(p_mettol, pcs.mettol),
+           nvl(p_meddig, pcs.meddig)
+    INTO v_szemely_id, v_csapat_id, v_pilota_szam, v_mettol, v_meddig
+    FROM pilota_csapat pcs WHERE pcs.pilota_csapat_id = p_pilota_csapat_id; 
     
     UPDATE pilota_csapat pcs
-       SET pcs.szemely_id  = uj_szemely_id
-          ,pcs.csapat_id   = uj_csapat_id
-          ,pcs.pilota_szam = uj_pilota_szam
-          ,pcs.mettol      = uj_mettol
-          ,pcs.meddig      = uj_meddig
+       SET pcs.szemely_id  = v_szemely_id
+          ,pcs.csapat_id   = v_csapat_id
+          ,pcs.pilota_szam = v_pilota_szam
+          ,pcs.mettol      = v_mettol
+          ,pcs.meddig      = v_meddig
      WHERE pcs.pilota_csapat_id = p_pilota_csapat_id;
   
   EXCEPTION

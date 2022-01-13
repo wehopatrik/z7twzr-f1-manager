@@ -92,41 +92,25 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_osszes IS
                                    ,p_nemzetiseg  IN VARCHAR2 DEFAULT NULL) IS
   
     c_proc_nev CONSTANT VARCHAR2(30) := 'pilota_osszes_modositas';
-    uj_szemely_nev VARCHAR2(40);
-    uj_szul_datum DATE;
-    uj_szul_orszag VARCHAR2(40);
-    uj_szul_hely VARCHAR2(40);
-    uj_nemzetiseg VARCHAR2(40);
+    v_szemely_nev VARCHAR2(40);
+    v_szul_datum DATE;
+    v_szul_orszag VARCHAR2(40);
+    v_szul_hely VARCHAR2(40);
+    v_nemzetiseg VARCHAR2(40);
   
   BEGIN
-    uj_szemely_nev := p_szemely_nev;
-    uj_szul_datum := p_szul_datum;
-    uj_szul_orszag := p_szul_orszag;
-    uj_szul_hely := p_szul_hely;
-    uj_nemzetiseg := p_nemzetiseg; 
-  
-    IF p_szemely_nev IS NULL THEN
-      SELECT po.szemely_nev INTO uj_szemely_nev FROM pilota_osszes po WHERE po.szemely_id = p_szemely_id;
-    END IF;
-    IF p_szul_datum IS NULL THEN
-      SELECT po.szul_datum INTO uj_szul_datum FROM pilota_osszes po WHERE po.szemely_id = p_szemely_id;
-    END IF;
-    IF p_szul_orszag IS NULL THEN
-      SELECT po.szul_orszag INTO uj_szul_orszag FROM pilota_osszes po WHERE po.szemely_id = p_szemely_id;
-    END IF;
-    IF p_szul_hely IS NULL THEN
-      SELECT po.szul_hely INTO uj_szul_hely FROM pilota_osszes po WHERE po.szemely_id = p_szemely_id;
-    END IF;
-    IF p_nemzetiseg IS NULL THEN
-      SELECT po.nemzetiseg INTO uj_nemzetiseg FROM pilota_osszes po WHERE po.szemely_id = p_szemely_id;
-    END IF;
+    SELECT nvl(p_szemely_nev, po.szemely_nev), nvl(p_szul_datum, po.szul_datum),
+           nvl(p_szul_orszag, po.szul_orszag), nvl(p_szul_hely, po.szul_hely),
+           nvl(p_nemzetiseg, po.nemzetiseg)
+    INTO v_szemely_nev, v_szul_datum, v_szul_orszag, v_szul_hely, v_nemzetiseg
+    FROM pilota_osszes po WHERE po.szemely_id = p_szemely_id;  
   
     UPDATE pilota_osszes po
-       SET po.szemely_nev = uj_szemely_nev
-          ,po.szul_datum  = uj_szul_datum
-          ,po.szul_orszag = uj_szul_orszag
-          ,po.szul_hely   = uj_szul_hely
-          ,po.nemzetiseg  = uj_nemzetiseg
+       SET po.szemely_nev = v_szemely_nev
+          ,po.szul_datum  = v_szul_datum
+          ,po.szul_orszag = v_szul_orszag
+          ,po.szul_hely   = v_szul_hely
+          ,po.nemzetiseg  = v_nemzetiseg
      WHERE po.szemely_id = p_szemely_id;
   
   EXCEPTION

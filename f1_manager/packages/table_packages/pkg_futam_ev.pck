@@ -128,59 +128,33 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_ev IS
                               ,p_idopont                DATE DEFAULT NULL) IS
   
     c_proc_nev CONSTANT VARCHAR2(30) := 'futam_ev_modositas';
-    uj_futam_id NUMBER;
-    uj_hanyadik_futam NUMBER;
-    uj_palyahossz NUMBER;
-    uj_kor_szam NUMBER;
-    uj_nyertes_szemely_id NUMBER;
-    uj_leggyorsabb_szemely_id NUMBER;
-    uj_leggyorsabb_ido VARCHAR2(10);
-    uj_idopont DATE;
+    v_futam_id NUMBER;
+    v_hanyadik_futam NUMBER;
+    v_palyahossz NUMBER;
+    v_kor_szam NUMBER;
+    v_nyertes_szemely_id NUMBER;
+    v_leggyorsabb_szemely_id NUMBER;
+    v_leggyorsabb_ido VARCHAR2(10);
+    v_idopont DATE;
   
-  BEGIN
-    uj_futam_id := p_futam_id;
-    uj_hanyadik_futam := p_hanyadik_futam;
-    uj_palyahossz := p_palyahossz;
-    uj_kor_szam := p_kor_szam;
-    uj_nyertes_szemely_id := p_nyertes_szemely_id;
-    uj_leggyorsabb_szemely_id := p_leggyorsabb_szemely_id;
-    uj_leggyorsabb_ido := p_leggyorsabb_ido;
-    uj_idopont := p_idopont;
-    
-    IF p_futam_id IS NULL THEN
-      SELECT fe.futam_id INTO uj_futam_id FROM futam_ev fe WHERE fe.futam_ev_id = p_futam_ev_id;
-    END IF;
-    IF p_hanyadik_futam IS NULL THEN
-      SELECT fe.hanyadik_futam INTO uj_hanyadik_futam FROM futam_ev fe WHERE fe.futam_ev_id = p_futam_ev_id;
-    END IF;
-    IF p_palyahossz IS NULL THEN
-      SELECT fe.palyahossz INTO uj_palyahossz FROM futam_ev fe WHERE fe.futam_ev_id = p_futam_ev_id;
-    END IF;
-    IF p_kor_szam IS NULL THEN
-      SELECT fe.kor_szam INTO uj_kor_szam FROM futam_ev fe WHERE fe.futam_ev_id = p_futam_ev_id;
-    END IF;
-    IF p_nyertes_szemely_id IS NULL THEN
-      SELECT fe.nyertes_szemely_id INTO uj_nyertes_szemely_id FROM futam_ev fe WHERE fe.futam_ev_id = p_futam_ev_id;
-    END IF;
-    IF p_leggyorsabb_szemely_id IS NULL THEN
-      SELECT fe.leggyorsabb_szemely_id INTO uj_leggyorsabb_szemely_id FROM futam_ev fe WHERE fe.futam_ev_id = p_futam_ev_id;
-    END IF;
-    IF p_leggyorsabb_ido IS NULL THEN
-      SELECT fe.leggyorsabb_ido INTO uj_leggyorsabb_ido FROM futam_ev fe WHERE fe.futam_ev_id = p_futam_ev_id;
-    END IF;
-    IF p_idopont IS NULL THEN
-      SELECT fe.idopont INTO uj_idopont FROM futam_ev fe WHERE fe.futam_ev_id = p_futam_ev_id;
-    END IF;
+  BEGIN   
+    SELECT nvl(p_futam_id, fe.futam_id), nvl(p_hanyadik_futam, fe.hanyadik_futam),
+           nvl(p_palyahossz, fe.palyahossz), nvl(p_kor_szam, fe.kor_szam),
+           nvl(p_nyertes_szemely_id, fe.nyertes_szemely_id), nvl(p_leggyorsabb_szemely_id, fe.leggyorsabb_szemely_id),
+           nvl(p_leggyorsabb_ido, fe.leggyorsabb_ido), nvl(p_idopont, fe.idopont)
+    INTO v_futam_id, v_hanyadik_futam, v_palyahossz, v_kor_szam, v_nyertes_szemely_id, v_leggyorsabb_szemely_id,
+         v_leggyorsabb_ido, v_idopont
+    FROM futam_ev fe WHERE fe.futam_ev_id = p_futam_ev_id;
   
     UPDATE futam_ev fe
-       SET fe.futam_id               = uj_futam_id
-          ,fe.hanyadik_futam         = uj_hanyadik_futam
-          ,fe.palyahossz             = uj_palyahossz
-          ,fe.kor_szam               = uj_kor_szam
-          ,fe.nyertes_szemely_id     = uj_nyertes_szemely_id
-          ,fe.leggyorsabb_szemely_id = uj_leggyorsabb_szemely_id
-          ,fe.leggyorsabb_ido        = uj_leggyorsabb_ido
-          ,fe.idopont                = uj_idopont
+       SET fe.futam_id               = v_futam_id
+          ,fe.hanyadik_futam         = v_hanyadik_futam
+          ,fe.palyahossz             = v_palyahossz
+          ,fe.kor_szam               = v_kor_szam
+          ,fe.nyertes_szemely_id     = v_nyertes_szemely_id
+          ,fe.leggyorsabb_szemely_id = v_leggyorsabb_szemely_id
+          ,fe.leggyorsabb_ido        = v_leggyorsabb_ido
+          ,fe.idopont                = v_idopont
      WHERE fe.futam_ev_id = p_futam_ev_id;
   
   EXCEPTION

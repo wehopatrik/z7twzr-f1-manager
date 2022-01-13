@@ -97,41 +97,25 @@ CREATE OR REPLACE PACKAGE BODY pkg_csapat IS
   
     c_proc_nev CONSTANT VARCHAR2(30) := 'csapat_modositas';
     
-    uj_csapat_nev VARCHAR2(40);
-    uj_motorgyarto_id NUMBER;
-    uj_csatlakozas_ev NUMBER;
-    uj_kozpont_hely VARCHAR2(40);
-    uj_kozpont_orszag VARCHAR2(40);
+    v_csapat_nev VARCHAR2(40);
+    v_motorgyarto_id NUMBER;
+    v_csatlakozas_ev NUMBER;
+    v_kozpont_hely VARCHAR2(40);
+    v_kozpont_orszag VARCHAR2(40);
   
-  BEGIN
-    uj_csapat_nev := p_csapat_nev;
-    uj_motorgyarto_id := p_motorgyarto_id;
-    uj_csatlakozas_ev := p_csatlakozas_ev;
-    uj_kozpont_hely := p_kozpont_hely;
-    uj_kozpont_orszag := p_kozpont_orszag;
-    
-    IF p_csapat_nev IS NULL THEN
-      SELECT cs.csapat_nev INTO uj_csapat_nev FROM csapat cs WHERE cs.csapat_id = p_csapat_id;
-    END IF;
-    IF p_motorgyarto_id IS NULL THEN
-      SELECT cs.motorgyarto_id INTO uj_motorgyarto_id FROM csapat cs WHERE cs.csapat_id = p_csapat_id;
-    END IF;
-    IF p_csatlakozas_ev IS NULL THEN
-      SELECT cs.csatlakozas_ev INTO uj_csatlakozas_ev FROM csapat cs WHERE cs.csapat_id = p_csapat_id;
-    END IF;
-    IF p_kozpont_hely IS NULL THEN
-      SELECT cs.kozpont_hely INTO uj_kozpont_hely FROM csapat cs WHERE cs.csapat_id = p_csapat_id;
-    END IF;
-    IF p_kozpont_orszag IS NULL THEN
-      SELECT cs.kozpont_orszag INTO uj_kozpont_orszag FROM csapat cs WHERE cs.csapat_id = p_csapat_id;
-    END IF;
+  BEGIN  
+    SELECT nvl(p_csapat_nev, cs.csapat_nev), nvl(p_motorgyarto_id, cs.motorgyarto_id),
+           nvl(p_csatlakozas_ev, cs.csatlakozas_ev), nvl(p_kozpont_hely, cs.kozpont_hely),
+           nvl(p_kozpont_orszag, cs.kozpont_orszag)
+    INTO v_csapat_nev, v_motorgyarto_id, v_csatlakozas_ev, v_kozpont_hely, v_kozpont_orszag
+    FROM csapat cs WHERE cs.csapat_id = p_csapat_id;
   
     UPDATE csapat cs
-       SET cs.csapat_nev     = uj_csapat_nev
-          ,cs.motorgyarto_id = uj_motorgyarto_id
-          ,cs.csatlakozas_ev = uj_csatlakozas_ev
-          ,cs.kozpont_hely   = uj_kozpont_hely
-          ,cs.kozpont_orszag = uj_kozpont_orszag
+       SET cs.csapat_nev     = v_csapat_nev
+          ,cs.motorgyarto_id = v_motorgyarto_id
+          ,cs.csatlakozas_ev = v_csatlakozas_ev
+          ,cs.kozpont_hely   = v_kozpont_hely
+          ,cs.kozpont_orszag = v_kozpont_orszag
      WHERE cs.csapat_id = p_csapat_id;
   
   EXCEPTION
