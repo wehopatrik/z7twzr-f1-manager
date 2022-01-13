@@ -15,7 +15,7 @@ CREATE OR REPLACE PACKAGE pkg_pilota_csapat IS
                                    
   PROCEDURE torles_pilota_csapat(p_pilota_csapat_id IN NUMBER);
   
-  PROCEDURE pilota_csapat_adatok(p_pilota_csapat_id IN NUMBER);
+  FUNCTION pilota_csapat_adatok(p_pilota_csapat_id IN NUMBER DEFAULT NULL) RETURN ty_pilota_csapat_l;
 
 END pkg_pilota_csapat;
 /
@@ -201,7 +201,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_csapat IS
   END torles_pilota_csapat;
   
   -- pilota_csapat tabla kiiratasa vagy egy pilota_csapat kiiratasa
-  PROCEDURE pilota_csapat_adatok(p_pilota_csapat_id IN NUMBER) IS
+  FUNCTION pilota_csapat_adatok(p_pilota_csapat_id IN NUMBER DEFAULT NULL) RETURN ty_pilota_csapat_l IS
     c_proc_nev CONSTANT VARCHAR2(30) := 'pilota_csapat_adatok';
     c_list ty_pilota_csapat_l;
     
@@ -230,7 +230,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_csapat IS
         WHERE pcs.pilota_csapat_id = p_pilota_csapat_id;
     END CASE;
 
-    FOR i IN 1 .. c_list.count
+    /*FOR i IN 1 .. c_list.count
     LOOP
       dbms_output.put_line('Pilota csapat ID: ' || c_list(i).pilota_csapat_id || chr(10) ||
                            'Szemely nev: ' || c_list(i).szemely_id || chr(10) ||
@@ -238,7 +238,10 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_csapat IS
                            'Pilota szam: ' || c_list(i).pilota_szam || chr(10) ||
                            'Mettol: ' || c_list(i).mettol || chr(10) ||
                            'Meddig: ' || c_list(i).meddig || chr(10));
-    END LOOP;
+    END LOOP;*/
+    
+    RETURN c_list;
+    
     EXCEPTION
       WHEN no_data_found THEN
         pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,

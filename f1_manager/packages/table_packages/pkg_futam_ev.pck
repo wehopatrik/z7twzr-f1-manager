@@ -21,7 +21,7 @@ CREATE OR REPLACE PACKAGE pkg_futam_ev IS
 
   PROCEDURE torles_futam_ev(p_futam_ev_id IN NUMBER);
   
-  PROCEDURE futam_ev_adatok(p_futam_ev_id IN NUMBER);
+  FUNCTION futam_ev_adatok(p_futam_ev_id IN NUMBER DEFAULT NULL) RETURN ty_futam_ev_l;
 
 END pkg_futam_ev;
 /
@@ -276,7 +276,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_ev IS
   END torles_futam_ev;
   
   -- futam_ev tabla kiiratasa vagy egy futam_ev kiiratasa
-  PROCEDURE futam_ev_adatok(p_futam_ev_id IN NUMBER) IS
+  FUNCTION futam_ev_adatok(p_futam_ev_id IN NUMBER DEFAULT NULL) RETURN ty_futam_ev_l IS
     c_proc_nev CONSTANT VARCHAR2(30) := 'futam_ev_adatok';
     c_list ty_futam_ev_l;
     
@@ -311,7 +311,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_ev IS
         WHERE fe.futam_ev_id = p_futam_ev_id;
     END CASE;
 
-    FOR i IN 1 .. c_list.count
+    /*FOR i IN 1 .. c_list.count
     LOOP
       dbms_output.put_line('Futam ev ID: ' || c_list(i).futam_ev_id || chr(10) ||
                            'Futam ID: ' || c_list(i).futam_id || chr(10) ||
@@ -322,7 +322,10 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_ev IS
                            'Leggyorsabb szemely: ' || c_list(i).leggyorsabb_szemely_id || chr(10) ||
                            'Leggyorsabb ido: ' || c_list(i).leggyorsabb_ido || chr(10) ||
                            'Idopont: ' || c_list(i).idopont || chr(10));
-    END LOOP;
+    END LOOP;*/
+    
+    RETURN c_list;
+    
     EXCEPTION
       WHEN no_data_found THEN
         pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,

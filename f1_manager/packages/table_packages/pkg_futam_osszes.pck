@@ -13,7 +13,7 @@ CREATE OR REPLACE PACKAGE pkg_futam_osszes IS
                                   
   PROCEDURE torles_futam_osszes(p_futam_id IN NUMBER);
   
-  PROCEDURE futam_osszes_adatok(p_futam_id IN NUMBER);
+  FUNCTION futam_osszes_adatok(p_futam_id IN NUMBER DEFAULT NULL) RETURN ty_futam_osszes_l;
 
 END pkg_futam_osszes;
 /
@@ -185,7 +185,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_osszes IS
   END torles_futam_osszes;
   
   -- futam_osszes tabla kiiratasa vagy egy futam_osszes kiiratasa
-  PROCEDURE futam_osszes_adatok(p_futam_id IN NUMBER) IS
+  FUNCTION futam_osszes_adatok(p_futam_id IN NUMBER DEFAULT NULL) RETURN ty_futam_osszes_l IS
     c_proc_nev CONSTANT VARCHAR2(30) := 'futam_osszes_adatok';
     c_list ty_futam_osszes_l;
     
@@ -212,14 +212,17 @@ CREATE OR REPLACE PACKAGE BODY pkg_futam_osszes IS
         WHERE fo.futam_id = p_futam_id;
     END CASE;
 
-    FOR i IN 1 .. c_list.count
+    /*FOR i IN 1 .. c_list.count
     LOOP
       dbms_output.put_line('Futam ID: ' || c_list(i).futam_id || chr(10) ||
                            'Futam nev: ' || c_list(i).futam_nev || chr(10) ||
                            'Futam orszag: ' || c_list(i).futam_orszag || chr(10) ||
                            'Futam hely: ' || c_list(i).futam_hely || chr(10) ||
                            'Palya nev: ' || c_list(i).palya_nev || chr(10));
-    END LOOP;
+    END LOOP;*/
+    
+    RETURN c_list;
+    
     EXCEPTION
       WHEN no_data_found THEN
         pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,

@@ -15,7 +15,7 @@ CREATE OR REPLACE PACKAGE pkg_csapat IS
   
   PROCEDURE torles_csapat(p_csapat_id IN NUMBER);
   
-  PROCEDURE csapat_adatok(p_csapat_id IN NUMBER);
+  FUNCTION csapat_adatok(p_csapat_id IN NUMBER DEFAULT NULL) RETURN ty_csapat_l;
 
 END pkg_csapat;
 /
@@ -213,7 +213,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_csapat IS
   END torles_csapat;
   
   -- csapat tabla kiiratasa vagy egy csapat kiiratasa
-  PROCEDURE csapat_adatok(p_csapat_id IN NUMBER) IS
+  FUNCTION csapat_adatok(p_csapat_id IN NUMBER DEFAULT NULL) RETURN ty_csapat_l IS
     c_proc_nev CONSTANT VARCHAR2(30) := 'csapat_adatok';
     c_list ty_csapat_l;
     
@@ -242,7 +242,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_csapat IS
         WHERE cs.csapat_id = p_csapat_id;
     END CASE;
 
-    FOR i IN 1 .. c_list.count
+    /*FOR i IN 1 .. c_list.count
     LOOP
       dbms_output.put_line('Csapat ID: ' || c_list(i).csapat_id || chr(10) ||
                            'Csapat nev: ' || c_list(i).csapat_nev || chr(10) ||
@@ -250,7 +250,10 @@ CREATE OR REPLACE PACKAGE BODY pkg_csapat IS
                            'Csatlakozasi ev: ' || c_list(i).csatlakozas_ev || chr(10) ||
                            'Kozpont hely: ' || c_list(i).kozpont_hely || chr(10) ||
                            'Kozpont orszag: ' || c_list(i).kozpont_orszag || chr(10));
-    END LOOP;
+    END LOOP;*/
+    
+    RETURN c_list;
+    
     EXCEPTION
       WHEN no_data_found THEN
         pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,

@@ -15,7 +15,7 @@ CREATE OR REPLACE PACKAGE pkg_pilota_osszes IS
                                    
   PROCEDURE torles_pilota_osszes(p_szemely_id IN NUMBER);
   
-  PROCEDURE pilota_osszes_adatok(p_szemely_id IN NUMBER);
+  FUNCTION pilota_osszes_adatok(p_szemely_id IN NUMBER DEFAULT NULL) RETURN ty_pilota_osszes_l;
 
 END pkg_pilota_osszes;
 /
@@ -204,7 +204,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_osszes IS
   END torles_pilota_osszes;
   
    -- pilota_osszes tabla kiiratasa vagy egy pilota_osszes kiiratasa
-  PROCEDURE pilota_osszes_adatok(p_szemely_id IN NUMBER) IS
+  FUNCTION pilota_osszes_adatok(p_szemely_id IN NUMBER DEFAULT NULL) RETURN ty_pilota_osszes_l IS
     c_proc_nev CONSTANT VARCHAR2(30) := 'pilota_osszes_adatok';
     c_list ty_pilota_osszes_l;
     
@@ -233,7 +233,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_osszes IS
         WHERE po.szemely_id = p_szemely_id;
     END CASE;
 
-    FOR i IN 1 .. c_list.count
+    /*FOR i IN 1 .. c_list.count
     LOOP
       dbms_output.put_line('Szemely ID: ' || c_list(i).szemely_id || chr(10) ||
                            'Szemely nev: ' || c_list(i).szemely_nev || chr(10) ||
@@ -241,7 +241,10 @@ CREATE OR REPLACE PACKAGE BODY pkg_pilota_osszes IS
                            'Szuletesi orsag: ' || c_list(i).szul_orszag || chr(10) ||
                            'Szuletesi hely: ' || c_list(i).szul_hely || chr(10) ||
                            'Nemzetiseg: ' || c_list(i).nemzetiseg || chr(10));
-    END LOOP;
+    END LOOP;*/
+    
+    RETURN c_list;
+    
     EXCEPTION
       WHEN no_data_found THEN
         pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,

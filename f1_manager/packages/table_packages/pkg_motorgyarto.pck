@@ -7,7 +7,7 @@ CREATE OR REPLACE PACKAGE pkg_motorgyarto IS
 
   PROCEDURE torles_motorgyarto(p_motorgyarto_id IN NUMBER);
   
-  PROCEDURE motorgyarto_adatok(p_motorgyarto_id IN NUMBER);
+  FUNCTION motorgyarto_adatok(p_motorgyarto_id IN NUMBER DEFAULT NULL) RETURN ty_motorgyarto_l;
     
 END pkg_motorgyarto;
 /
@@ -123,7 +123,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_motorgyarto IS
   END torles_motorgyarto;
   
   -- motorgyarto tabla kiiratasa vagy egy motorgyarto kiiratasa
-  PROCEDURE motorgyarto_adatok(p_motorgyarto_id IN NUMBER) IS
+  FUNCTION motorgyarto_adatok(p_motorgyarto_id IN NUMBER DEFAULT NULL) RETURN ty_motorgyarto_l IS
     c_proc_nev CONSTANT VARCHAR2(30) := 'motorgyarto_adatok';
     c_list ty_motorgyarto_l;
     
@@ -144,11 +144,14 @@ CREATE OR REPLACE PACKAGE BODY pkg_motorgyarto IS
         WHERE m.motorgyarto_id = p_motorgyarto_id;
     END CASE;
 
-    FOR i IN 1 .. c_list.count
+    /*FOR i IN 1 .. c_list.count
     LOOP
       dbms_output.put_line('Motorgyarto ID: ' || c_list(i).motorgyarto_id || chr(10) ||
                            'Motorgyarto nev: ' || c_list(i).motorgyarto_nev || chr(10));
-    END LOOP;
+    END LOOP;*/
+    
+    RETURN c_list;
+    
     EXCEPTION
       WHEN no_data_found THEN
         pkg_hiba_log.proc_hiba_log(p_hiba_uzenet => dbms_utility.format_error_backtrace,
